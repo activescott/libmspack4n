@@ -17,8 +17,8 @@ END
 
 cd mspack
 
-cl /O2 -I. /c *.c
-link *.obj /DLL /DEF:mspack.def /IMPLIB:mspack.lib
+cl /O2 -I.. -I. /DHAVE_CONFIG_H /c *.c
+link *.obj /DLL /DEF:mspack.def /IMPLIB:mspack.lib /OUT:mspack.dll
 
 cd ..
 

@@ -1,0 +1,7 @@
+*.obj
+Packages/libmspack/config.h
+#See winbuild.bat for why debug.c.ignore
+Packages/libmspack/mspack/debug.c.ignore 
+Packages/libmspack/mspack/mspack.dll
+Packages/libmspack/mspack/mspack.lib
+Packages/libmspack/mspack/mspack.exp
