@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace LibMSPackNTest
@@ -11,7 +10,6 @@ namespace LibMSPackNTest
 		static void Main()
 		{
 			IEnumerable<string> files = Directory.GetFiles(AppPath, "*.cab");
-			files = files.Reverse();
 			foreach (var f in files)
 				ExplodeCab(f);
 		}
