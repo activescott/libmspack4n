@@ -110,6 +110,9 @@ struct mspack_file_p {
   const char *name;
 };
 
+//prototype:
+static void msp_msg(struct mspack_file *file, const char *format, ...);
+
 static struct mspack_file *msp_open(struct mspack_system *self,
 				    const char *filename, int mode)
 {
@@ -127,6 +130,7 @@ static struct mspack_file *msp_open(struct mspack_system *self,
   if ((fh = (struct mspack_file_p *) malloc(sizeof(struct mspack_file_p)))) {
     fh->name = filename;
     if ((fh->fh = fopen(filename, fmode))) return (struct mspack_file *) fh;
+	msp_msg(NULL, "fopen error:%i", errno);//22=Invalid argument, 2=No such file or directory 
     free(fh);
   }
   return NULL;
