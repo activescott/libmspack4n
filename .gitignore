@@ -5,8 +5,8 @@ Packages/libmspack/mspack/debug.c.ignore
 Packages/libmspack/mspack/mspack.dll
 Packages/libmspack/mspack/mspack.lib
 Packages/libmspack/mspack/mspack.exp
-*.suo 
-libmspack4n/bin 
-libmspack4n/obj 
-libmspack4ntest/bin 
-libmspack4ntest/obj 
+*.suo
+libmspack4n/bin/
+libmspack4n/obj/
+libmspack4ntest/bin/
+libmspack4ntest/obj/
