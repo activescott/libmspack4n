@@ -1,6 +1,14 @@
-/* This file is for a .NET-friendly wrapper for the CAB decompression code.
+/* 
+ * (C) 2013 Scott Willeke (scott@willeke.com).
+ *
+ * This is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License (LGPL) version 2.1
+ *
+ * This file is for a .NET-friendly wrapper for the CAB decompression code.
  * Unfortunately it isn't possible/feasible to return a struct with methods on it from C (as is done on the mscab_decompressor and other structs).
  * So the code in here works around it.
+ * 
+ * 
  * 
  * My goals with lessmsi is to be able to decompress a cab file-by-file. So the only functions I really need are as follows:
  * mscab_decompressor mspack_create_cab_decompressor(*blah)	- can be called directly from .NET
