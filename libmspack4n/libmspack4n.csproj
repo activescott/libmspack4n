@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MSCabDecompressor.cs" />
     <Compile Include="MSCompressedFile.cs" />
     <Compile Include="MSCabinet.cs" />
     <Compile Include="NativeMethods.cs" />

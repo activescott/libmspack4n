@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{12163A1B-35F9-4349-B1FC-51412F618B97}</ProjectGuid>
+    <RootNamespace>libmspack</RootNamespace>
+    <ProjectName>libmspack-for-debugging-only</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>mspack</TargetName>
+    <OutDir>$(ProjectDir)libmspack\mspack\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>mspack</TargetName>
+    <OutDir>$(ProjectDir)libmspack\mspack\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\projects\lessmsi.libmspack4n\Packages\libmspack\mspack;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>$(ProjectDir)libmspack\mspack\mspack.def</ModuleDefinitionFile>
+    </Link>
+    <PreBuildEvent>
+      <Command>echo #define inline __inline &gt; $(ProjectDir)libmspack\mspack\config.h
+echo #define HAVE_STRING_H 1 &gt;&gt; $(ProjectDir)libmspack\mspack\config.h
+echo #define HAVE_LIMITS_H 1 &gt;&gt; $(ProjectDir)libmspack\mspack\config.h
+echo #define HAVE_MEMCMP 1 &gt;&gt; $(ProjectDir)libmspack\mspack\config.h</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generating config.h</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>C:\projects\lessmsi.libmspack4n\Packages\libmspack\mspack;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HAVE_CONFIG_H;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>$(ProjectDir)libmspack\mspack\mspack.def</ModuleDefinitionFile>
+    </Link>
+    <PreBuildEvent>
+      <Command>echo #define inline __inline &gt; $(ProjectDir)libmspack\mspack\config.h
+echo #define HAVE_STRING_H 1 &gt;&gt; $(ProjectDir)libmspack\mspack\config.h
+echo #define HAVE_LIMITS_H 1 &gt;&gt; $(ProjectDir)libmspack\mspack\config.h
+echo #define HAVE_MEMCMP 1 &gt;&gt; $(ProjectDir)libmspack\mspack\config.h</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Generating config.h</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="libmspack\mspack\cabc.c" />
+    <ClCompile Include="libmspack\mspack\cabd.c" />
+    <ClCompile Include="libmspack\mspack\cabd_dotnet_wrapper.c" />
+    <ClCompile Include="libmspack\mspack\chmc.c" />
+    <ClCompile Include="libmspack\mspack\chmd.c" />
+    <ClCompile Include="libmspack\mspack\hlpc.c" />
+    <ClCompile Include="libmspack\mspack\hlpd.c" />
+    <ClCompile Include="libmspack\mspack\kwajc.c" />
+    <ClCompile Include="libmspack\mspack\kwajd.c" />
+    <ClCompile Include="libmspack\mspack\litc.c" />
+    <ClCompile Include="libmspack\mspack\litd.c" />
+    <ClCompile Include="libmspack\mspack\lzssd.c" />
+    <ClCompile Include="libmspack\mspack\lzxc.c" />
+    <ClCompile Include="libmspack\mspack\lzxd.c" />
+    <ClCompile Include="libmspack\mspack\mszipc.c" />
+    <ClCompile Include="libmspack\mspack\mszipd.c" />
+    <ClCompile Include="libmspack\mspack\qtmc.c" />
+    <ClCompile Include="libmspack\mspack\qtmd.c" />
+    <ClCompile Include="libmspack\mspack\system.c" />
+    <ClCompile Include="libmspack\mspack\szddc.c" />
+    <ClCompile Include="libmspack\mspack\szddd.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libmspack\mspack\cab.h" />
+    <ClInclude Include="libmspack\mspack\chm.h" />
+    <ClInclude Include="libmspack\mspack\config.h" />
+    <ClInclude Include="libmspack\mspack\des.h" />
+    <ClInclude Include="libmspack\mspack\hlp.h" />
+    <ClInclude Include="libmspack\mspack\kwaj.h" />
+    <ClInclude Include="libmspack\mspack\lit.h" />
+    <ClInclude Include="libmspack\mspack\lzss.h" />
+    <ClInclude Include="libmspack\mspack\lzx.h" />
+    <ClInclude Include="libmspack\mspack\mspack.h" />
+    <ClInclude Include="libmspack\mspack\mszip.h" />
+    <ClInclude Include="libmspack\mspack\qtm.h" />
+    <ClInclude Include="libmspack\mspack\readbits.h" />
+    <ClInclude Include="libmspack\mspack\readhuff.h" />
+    <ClInclude Include="libmspack\mspack\sha.h" />
+    <ClInclude Include="libmspack\mspack\system.h" />
+    <ClInclude Include="libmspack\mspack\szdd.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

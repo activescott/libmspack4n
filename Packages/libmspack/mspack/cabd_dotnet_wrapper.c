@@ -65,6 +65,10 @@ struct mscabd_cabinet* mspack_invoke_mscab_decompressor_open(struct mscab_decomp
 	//trace(self, "mspack_invoke_mscab_decompressor_extract: fol->data.cab->base.filename: '%s'", fol->data.cab->base.filename);
 	return self->extract(self, file, filename);
  }
+
+int mspack_invoke_mscab_decompressor_append(struct mscab_decompressor *self, struct mscabd_cabinet *cab, struct mscabd_cabinet *nextcab) {
+	return self->append(self, cab, nextcab);
+}
  
  int mspack_invoke_mscab_decompressor_last_error(struct mscab_decompressor *self) {
 	return self->last_error(self);

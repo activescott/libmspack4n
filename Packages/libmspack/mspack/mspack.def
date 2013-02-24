@@ -29,4 +29,5 @@ EXPORTS
 	mspack_invoke_mscab_decompressor_open
 	mspack_invoke_mscab_decompressor_close
 	mspack_invoke_mscab_decompressor_extract
+	mspack_invoke_mscab_decompressor_append
 	mspack_invoke_mscab_decompressor_last_error
