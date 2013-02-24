@@ -30,21 +30,19 @@ namespace LibMSPackN
 		private IntPtr _pNativeCabinet;
 		private readonly string _cabinetFilename;
 		private IntPtr _pCabinetFilenamePinned;
-		private MSCabDecompressor _decompressor;		
-
-
+		private IntPtr _pDecompressor;
 
 		public MSCabinet(string cabinetFilename)
 		{
 			_cabinetFilename = cabinetFilename;
 			_pCabinetFilenamePinned = Marshal.StringToCoTaskMemAnsi(_cabinetFilename);// needs to be pinned as we use the address in unmanaged code.
-			_decompressor = MSCabDecompressor.Default;
+			_pDecompressor = MSCabDecompressor.CreateInstance();
 
 			// open cabinet:
-			_pNativeCabinet = NativeMethods.mspack_invoke_mscab_decompressor_open(Decompressor.Pointer, _pCabinetFilenamePinned);
+			_pNativeCabinet = NativeMethods.mspack_invoke_mscab_decompressor_open(_pDecompressor, _pCabinetFilenamePinned);
 			if (_pNativeCabinet == IntPtr.Zero)
 			{
-				var lasterror = NativeMethods.mspack_invoke_mscab_decompressor_last_error(Decompressor.Pointer);
+				var lasterror = NativeMethods.mspack_invoke_mscab_decompressor_last_error(_pDecompressor);
 				throw new Exception("Failed to open cabinet. Last error:" + lasterror);
 			}
 			//Marshal.PtrToStructure(_pNativeCabinet, _nativeCabinet);
@@ -66,17 +64,14 @@ namespace LibMSPackN
 			Debug.Print("Disposing MSCabinet for {0}. isDisposing:{1}", _cabinetFilename, isDisposing);
 			if (_pNativeCabinet != IntPtr.Zero)
 			{
-				//NOTE: Check here that the pointer is still valid. If we're finalizing it might have been finalized before us. In that case WE LEAK!
-				if (!_decompressor.IsInvalidState)
-				{
-					NativeMethods.mspack_invoke_mscab_decompressor_close(_decompressor.Pointer, _pNativeCabinet);
-					_pNativeCabinet = IntPtr.Zero;
-				}
-				else
-				{
-					//TODO: Find a better way to handle this with multiple instances of MSCabinet using a shared decompressor
-					Debug.Fail("Leaking decompressor pointer because of finalization order.");
-				}
+				NativeMethods.mspack_invoke_mscab_decompressor_close(_pDecompressor, _pNativeCabinet);
+				_pNativeCabinet = IntPtr.Zero;
+			}
+
+			if (_pDecompressor != IntPtr.Zero)
+			{
+				MSCabDecompressor.DestroyInstance(_pDecompressor);
+				_pDecompressor = IntPtr.Zero;
 			}
 			if (_pCabinetFilenamePinned!= IntPtr.Zero)
 			{
@@ -94,15 +89,15 @@ namespace LibMSPackN
 		[DebuggerStepThrough, DebuggerHidden]
 		private void ThrowOnInvalidState()
 		{
-			if (_pNativeCabinet == null)
+			if (_pNativeCabinet == IntPtr.Zero)
 				throw new InvalidOperationException("Cabinet not initialized.");
-			if (Decompressor.IsInvalidState)
+			if (_pDecompressor == IntPtr.Zero)
 				throw new InvalidOperationException("Decompressor not initialized.");
 		}
 
 		internal bool IsInvalidState
 		{
-			get { return _pNativeCabinet == IntPtr.Zero || Decompressor.IsInvalidState; }
+			get { return _pNativeCabinet == IntPtr.Zero || _pDecompressor == IntPtr.Zero; }
 		}
 
 		public MSCabinetFlags Flags
@@ -132,9 +127,9 @@ namespace LibMSPackN
 			}
 		}
 
-		internal MSCabDecompressor Decompressor
+		internal IntPtr Decompressor
 		{
-			get { return _decompressor; }
+			get { return _pDecompressor; }
 		}
 
 		public IEnumerable<MSCompressedFile> GetFiles()
@@ -161,7 +156,7 @@ namespace LibMSPackN
 		/// <param name="nextCabinet">The cab to append to this one.</param>
 		public void Append(MSCabinet nextCabinet)
 		{
-			var result = NativeMethods.mspack_invoke_mscab_decompressor_append(Decompressor.Pointer, _pNativeCabinet, nextCabinet._pNativeCabinet);
+			var result = NativeMethods.mspack_invoke_mscab_decompressor_append(_pDecompressor, _pNativeCabinet, nextCabinet._pNativeCabinet);
 			if (result != NativeMethods.MSPACK_ERR.MSPACK_ERR_OK)
 				throw new Exception(string.Format("Error '{0}' appending cab '{1}' to {2}.", result, nextCabinet._cabinetFilename, _cabinetFilename));
 			

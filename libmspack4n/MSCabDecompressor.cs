@@ -13,9 +13,41 @@ namespace LibMSPackN
 
 		private MSCabDecompressor()
 		{
-			_pDecompressor = NativeMethods.mspack_create_cab_decompressor(IntPtr.Zero);
-			if (_pDecompressor == IntPtr.Zero)
+			_pDecompressor = CreateInstance();
+		}
+
+		~MSCabDecompressor()
+		{
+			Dispose();
+		}
+
+		public void Dispose()
+		{
+			if (_pDecompressor != IntPtr.Zero)
+			{
+				DestroyInstance(_pDecompressor);
+				_pDecompressor = IntPtr.Zero;
+			}
+		}
+
+		/// <summary>
+		/// Creates a native instance of the decompressor and returns the pointer. Must be destroyed via <see cref="DestroyInstance"/>.
+		/// </summary>
+		internal static IntPtr CreateInstance()
+		{
+			var ptr = NativeMethods.mspack_create_cab_decompressor(IntPtr.Zero);
+			if (ptr == IntPtr.Zero)
 				throw new Exception("Failed to create cab_decompressor.");
+			return ptr;
+		}
+
+		/// <summary>
+		/// Destroys the specified instance that was created with <see cref="CreateInstance"/>.
+		/// </summary>
+		/// <param name="pDecompressor"></param>
+		internal static void DestroyInstance(IntPtr pDecompressor)
+		{
+			NativeMethods.mspack_destroy_cab_decompressor(pDecompressor);
 		}
 
 		internal IntPtr Pointer
@@ -49,20 +81,6 @@ namespace LibMSPackN
 		public bool IsInvalidState
 		{
 			get { return _pDecompressor == IntPtr.Zero; }
-		}
-
-		~MSCabDecompressor()
-		{
-			Dispose();
-		}
-
-		public void Dispose()
-		{
-			if (_pDecompressor != IntPtr.Zero)
-			{
-				NativeMethods.mspack_destroy_cab_decompressor(_pDecompressor);
-				_pDecompressor = IntPtr.Zero;
-			}
 		}
 
 		private void ThrowOnInvalidState()

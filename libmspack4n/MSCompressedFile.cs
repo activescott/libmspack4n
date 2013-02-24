@@ -66,7 +66,7 @@ namespace LibMSPackN
 			try
 			{
 				pDestinationFilename = Marshal.StringToCoTaskMemAnsi(destinationFilename);
-				var result = NativeMethods.mspack_invoke_mscab_decompressor_extract(_parentCabinet.Decompressor.Pointer, _pNativeFile, pDestinationFilename);
+				var result = NativeMethods.mspack_invoke_mscab_decompressor_extract(_parentCabinet.Decompressor, _pNativeFile, pDestinationFilename);
 				if (result != NativeMethods.MSPACK_ERR.MSPACK_ERR_OK)
 					throw new Exception(string.Format("Error '{0}' extracting file to {1}.", result, destinationFilename));
 			}
