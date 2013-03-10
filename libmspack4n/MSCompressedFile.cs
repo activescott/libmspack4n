@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace LibMSPackN
@@ -69,12 +70,32 @@ namespace LibMSPackN
 				var result = NativeMethods.mspack_invoke_mscab_decompressor_extract(_parentCabinet.Decompressor, _pNativeFile, pDestinationFilename);
 				if (result != NativeMethods.MSPACK_ERR.MSPACK_ERR_OK)
 					throw new Exception(string.Format("Error '{0}' extracting file to {1}.", result, destinationFilename));
+				
+				var modifiedTime = GetModifiedTime();
+				File.SetCreationTime(destinationFilename, modifiedTime);
+				File.SetLastWriteTime(destinationFilename, modifiedTime);
+
+				var theAttributes = File.GetAttributes(destinationFilename);
+				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_ARCH) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_ARCH)
+					theAttributes |= FileAttributes.Archive;
+				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_HIDDEN) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_HIDDEN)
+					theAttributes |= FileAttributes.Hidden;
+				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_RDONLY) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_RDONLY)
+					theAttributes |= FileAttributes.ReadOnly;
+				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_SYSTEM) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_SYSTEM)
+					theAttributes |= FileAttributes.System;
+				File.SetAttributes(destinationFilename, theAttributes);
 			}
 			finally
 			{
 				if (pDestinationFilename != IntPtr.Zero)
 					Marshal.FreeCoTaskMem(pDestinationFilename);
 			}
+		}
+
+		private DateTime GetModifiedTime()
+		{
+			return new DateTime(_nativeFile.date_y, _nativeFile.date_m, _nativeFile.date_d, _nativeFile.time_h, _nativeFile.time_m, _nativeFile.time_s);
 		}
 	}
 }
