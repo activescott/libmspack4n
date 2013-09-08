@@ -5,29 +5,27 @@ namespace LibMSPackN
 	/// <summary>
 	///  Used internally to manage the decompressor. Technically you need one of these per thread (see code comments in libmspack, but I'm assuming single threaded or safe multithreaded access here).
 	/// </summary>
-	internal sealed class MSCabDecompressor : IDisposable
+	internal sealed class MsCabDecompressor : IDisposable
 	{
 		private IntPtr _pDecompressor;
-		private static volatile MSCabDecompressor _default;
+		private static volatile MsCabDecompressor _default;
 		private static readonly object SyncRoot = new object();
 
-		private MSCabDecompressor()
+		private MsCabDecompressor()
 		{
 			_pDecompressor = CreateInstance();
 		}
 
-		~MSCabDecompressor()
+		~MsCabDecompressor()
 		{
 			Dispose();
 		}
 
 		public void Dispose()
 		{
-			if (_pDecompressor != IntPtr.Zero)
-			{
-				DestroyInstance(_pDecompressor);
-				_pDecompressor = IntPtr.Zero;
-			}
+		    if (_pDecompressor == IntPtr.Zero) return;
+		    DestroyInstance(_pDecompressor);
+		    _pDecompressor = IntPtr.Zero;
 		}
 
 		/// <summary>
@@ -62,7 +60,7 @@ namespace LibMSPackN
 		/// <summary>
 		/// Returns the defalut instance of a decompressor. DO NOT DISPOSE IT!
 		/// </summary>
-		public static MSCabDecompressor Default
+		public static MsCabDecompressor Default
 		{
 			get
 			{
@@ -71,14 +69,14 @@ namespace LibMSPackN
 					lock (SyncRoot)
 					{
 						if (_default == null)
-							_default = new MSCabDecompressor();
+							_default = new MsCabDecompressor();
 					}
 				}
 				return _default;
 			}
 		}
 
-		public bool IsInvalidState
+	    private bool IsInvalidState
 		{
 			get { return _pDecompressor == IntPtr.Zero; }
 		}
@@ -86,7 +84,7 @@ namespace LibMSPackN
 		private void ThrowOnInvalidState()
 		{
 			if (IsInvalidState)
-				throw new ObjectDisposedException(typeof(MSCabDecompressor).Name);
+				throw new ObjectDisposedException(typeof(MsCabDecompressor).Name);
 		}
 	}
 }

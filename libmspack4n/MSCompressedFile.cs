@@ -5,15 +5,15 @@ using System.Runtime.InteropServices;
 namespace LibMSPackN
 {
 	/// <summary>
-	/// Represents a file contained inside of a cab. Returned from <see cref="MSCabinet.GetFiles()"/>.
+	/// Represents a file contained inside of a cab. Returned from <see cref="MsCabinet.GetFiles()"/>.
 	/// </summary>
-	public sealed class MSCompressedFile
+	public sealed class MsCompressedFile
 	{
-		private readonly MSCabinet _parentCabinet;
+		private readonly MsCabinet _parentCabinet;
 		private readonly NativeMethods.mscabd_file _nativeFile;
 		private readonly IntPtr _pNativeFile;
 
-		internal MSCompressedFile(MSCabinet parentCabinet, IntPtr pNativeFile)
+		internal MsCompressedFile(MsCabinet parentCabinet, IntPtr pNativeFile)
 		{
 			//NOTE: we don't need to explicitly clean the nativeFile up. It is cleaned up by the parent cabinet.
 			_parentCabinet = parentCabinet;
@@ -47,23 +47,19 @@ namespace LibMSPackN
 			}
 		}
 
-		public MSCompressedFile Next
+		public MsCompressedFile Next
 		{
 			get
 			{
-				MSCompressedFile next;
-				if (_nativeFile.next != IntPtr.Zero)
-					next = new MSCompressedFile(_parentCabinet, _nativeFile.next);
-				else
-					next = null;
-				return next;
+			    var next = _nativeFile.next != IntPtr.Zero ? new MsCompressedFile(_parentCabinet, _nativeFile.next) : null;
+			    return next;
 			}
 		}
 
 		public void ExtractTo(string destinationFilename)
 		{
 			ThrowOnInvalidState();
-			IntPtr pDestinationFilename = IntPtr.Zero;
+			var pDestinationFilename = IntPtr.Zero;
 			try
 			{
 				pDestinationFilename = Marshal.StringToCoTaskMemAnsi(destinationFilename);
