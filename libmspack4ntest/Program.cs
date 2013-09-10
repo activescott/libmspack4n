@@ -33,7 +33,7 @@ namespace LibMSPackNTest
 			Console.WriteLine("Files in " + cabinetFilename + ":");
 			try
 			{
-				using (var cab = new LibMSPackN.MSCabinet(cabinetFilename))
+				using (var cab = new MSCabinet(cabinetFilename))
 				{
 					var outDir = OutDir(cabinetFilename);
 					ExplodeCab(cab, outDir);
@@ -50,8 +50,10 @@ namespace LibMSPackNTest
 		private static string OutDir(string cabinetFilename)
 		{
 			var outDir = Path.Combine(AppPath, "test_output");
-			outDir = Path.Combine(outDir, Path.GetFileName(cabinetFilename).Replace(".cab", "_cab"));
-			return outDir;
+		    var fileName = Path.GetFileName(cabinetFilename);
+		    if (fileName != null)
+		        outDir = Path.Combine(outDir, fileName.Replace(".cab", "_cab"));
+		    return outDir;
 		}
 
 		private static void ExplodeCab(MSCabinet cab, string outDir)
@@ -67,11 +69,11 @@ namespace LibMSPackNTest
 			}
 		}
 
-		protected static string AppPath
+	    private static string AppPath
 		{
 			get
 			{
-				string path = Assembly.GetExecutingAssembly().Location;
+				var path = Assembly.GetExecutingAssembly().Location;
 				path = Path.GetDirectoryName(path);
 				return path;
 			}

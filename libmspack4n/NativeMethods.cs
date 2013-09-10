@@ -13,18 +13,18 @@ namespace LibMSPackN
 		/// </summary>
 		public static void DoTest()
 		{
-			IntPtr pDecompressor = mspack_create_cab_decompressor(IntPtr.Zero);
+			var pDecompressor = mspack_create_cab_decompressor(IntPtr.Zero);
 			const string cabFilename = @"C:\projects\LibMSPackDotNet\LibMSPackDotNetTest\bin\Debug\huge-lzx15.cab";
 			const string outFilename = @"C:\projects\LibMSPackDotNet\LibMSPackDotNetTest\bin\Debug\huge-lzx15.out";
 
-			IntPtr pCabFilename = Marshal.StringToCoTaskMemAnsi(cabFilename);
-			IntPtr pOutFilename = Marshal.StringToCoTaskMemAnsi(outFilename);
+			var pCabFilename = Marshal.StringToCoTaskMemAnsi(cabFilename);
+			var pOutFilename = Marshal.StringToCoTaskMemAnsi(outFilename);
 
-			IntPtr pCabinet = mspack_invoke_mscab_decompressor_open(pDecompressor, pCabFilename);
-			mscabd_cabinet cabStruct = (mscabd_cabinet) Marshal.PtrToStructure(pCabinet, typeof (mscabd_cabinet));
-			IntPtr pFirstFile = cabStruct.files;
+			var pCabinet = mspack_invoke_mscab_decompressor_open(pDecompressor, pCabFilename);
+			var cabStruct = (mscabd_cabinet) Marshal.PtrToStructure(pCabinet, typeof (mscabd_cabinet));
+			var pFirstFile = cabStruct.files;
 			Debug.Print("pFirstFile: 0x" + pFirstFile.ToInt32().ToString("x"));
-			MSPACK_ERR result = mspack_invoke_mscab_decompressor_extract(pDecompressor, pFirstFile, pOutFilename);
+			var result = mspack_invoke_mscab_decompressor_extract(pDecompressor, pFirstFile, pOutFilename);
 			Debug.Print("extract result: {0}", result);
 			mspack_invoke_mscab_decompressor_close(pDecompressor, pCabinet);
 			mspack_destroy_cab_decompressor(pDecompressor);
@@ -58,7 +58,7 @@ namespace LibMSPackN
 			[MarshalAs(UnmanagedType.LPStr)] [FieldOffset(4)] public string filename;
 
 			/** The uncompressed length of the file, in bytes. */
-			[FieldOffset(8)] public uint length;
+			[FieldOffset(8)] public readonly uint length;
 
 			/**
 			 * File attributes.
@@ -72,31 +72,31 @@ namespace LibMSPackN
 			 * - #MSCAB_ATTRIB_UTF_NAME indicates the filename is in UTF8 format rather
 			 *   than ISO-8859-1.
 			 */
-			[FieldOffset(12)] public mscabd_file_attribs attribs;
+			[FieldOffset(12)] public readonly mscabd_file_attribs attribs;
 
 			/** File's last modified time, hour field. */
-			[FieldOffset(16)] public byte time_h;
+			[FieldOffset(16)] public readonly byte time_h;
 
 			/** File's last modified time, minute field. */
-			[FieldOffset(17)] public byte time_m;
+			[FieldOffset(17)] public readonly byte time_m;
 
 			/** File's last modified time, second field. */
-			[FieldOffset(18)] public byte time_s;
+			[FieldOffset(18)] public readonly byte time_s;
 
 			/** File's last modified date, day field. */
-			[FieldOffset(19)] public byte date_d;
+			[FieldOffset(19)] public readonly byte date_d;
 
 			/** File's last modified date, month field. */
-			[FieldOffset(20)] public byte date_m;
+			[FieldOffset(20)] public readonly byte date_m;
 
 			/** File's last modified date, year field. */
-			[FieldOffset(24)] public int date_y;
+			[FieldOffset(24)] public readonly int date_y;
 
 			/** A pointer to the folder that contains this file. */
-			[FieldOffset(28)] public IntPtr /*mscabd_folder*/ folder;
+			[FieldOffset(28)] private readonly IntPtr /*mscabd_folder*/ folder;
 
 			/** The uncompressed offset of this file in its folder. */
-			[FieldOffset(32)] public uint offset;
+			[FieldOffset(32)] private readonly uint offset;
 		}
 
 		[Flags]
@@ -159,10 +159,10 @@ namespace LibMSPackN
 			[FieldOffset(20)] public IntPtr /*mscabd_cabinet*/ nextcab;
 
 			/** The filename of the previous cabinet in a cabinet set, or NULL. */
-			[MarshalAs(UnmanagedType.LPStr)] [FieldOffset(24)] public string prevname;
+			[MarshalAs(UnmanagedType.LPStr)] [FieldOffset(24)] public readonly string prevname;
 
 			/** The filename of the next cabinet in a cabinet set, or NULL. */
-			[MarshalAs(UnmanagedType.LPStr)] [FieldOffset(28)] public string nextname;
+			[MarshalAs(UnmanagedType.LPStr)] [FieldOffset(28)] public readonly string nextname;
 
 			/** The name of the disk containing the previous cabinet in a cabinet
 			 * set, or NULL.
@@ -218,7 +218,15 @@ namespace LibMSPackN
 			 */
 
 			[FieldOffset(56)] //NOTE the unexpected pack here. But this is the way it is in C!
-			public int flags;
+			public readonly int flags;
+
+		    public mscabd_cabinet(string prevname, string nextname, IntPtr files, int flags)
+		    {
+		        this.prevname = prevname;
+		        this.nextname = nextname;
+		        this.files = files;
+		        this.flags = flags;
+		    }
 		}
 
 		/// <summary>
@@ -369,9 +377,9 @@ namespace LibMSPackN
 		[StructLayout(LayoutKind.Sequential, Size = 4)]
 		internal struct off_t
 		{
-			private Int32 value;
+			private readonly Int32 value;
 
-			public off_t(Int32 x)
+		    private off_t(Int32 x)
 			{
 				value = x;
 			}

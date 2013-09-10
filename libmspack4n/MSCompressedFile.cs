@@ -51,19 +51,15 @@ namespace LibMSPackN
 		{
 			get
 			{
-				MSCompressedFile next;
-				if (_nativeFile.next != IntPtr.Zero)
-					next = new MSCompressedFile(_parentCabinet, _nativeFile.next);
-				else
-					next = null;
-				return next;
+			    var next = _nativeFile.next != IntPtr.Zero ? new MSCompressedFile(_parentCabinet, _nativeFile.next) : null;
+			    return next;
 			}
 		}
 
 		public void ExtractTo(string destinationFilename)
 		{
 			ThrowOnInvalidState();
-			IntPtr pDestinationFilename = IntPtr.Zero;
+			var pDestinationFilename = IntPtr.Zero;
 			try
 			{
 				pDestinationFilename = Marshal.StringToCoTaskMemAnsi(destinationFilename);

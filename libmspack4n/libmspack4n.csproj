@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MSCabDecompressor.cs" />
+    <Compile Include="MSCabinetFlags.cs" />
     <Compile Include="MSCompressedFile.cs" />
     <Compile Include="MSCabinet.cs" />
     <Compile Include="NativeMethods.cs" />

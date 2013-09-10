@@ -28,50 +28,45 @@ namespace LibMSPackN
 	{	
 		private NativeMethods.mscabd_cabinet _nativeCabinet = new NativeMethods.mscabd_cabinet();
 		private IntPtr _pNativeCabinet;
-		private readonly string _cabinetFilename;
-		private IntPtr _pCabinetFilenamePinned;
-		private IntPtr _pDecompressor;
+	    private IntPtr _pCabinetFilenamePinned;
 
-		public MSCabinet(string cabinetFilename)
+	    public MSCabinet(string cabinetFilename)
 		{
-			_cabinetFilename = cabinetFilename;
-			_pCabinetFilenamePinned = Marshal.StringToCoTaskMemAnsi(_cabinetFilename);// needs to be pinned as we use the address in unmanaged code.
-			_pDecompressor = MSCabDecompressor.CreateInstance();
+			LocalFilePath = cabinetFilename;
+			_pCabinetFilenamePinned = Marshal.StringToCoTaskMemAnsi(LocalFilePath);// needs to be pinned as we use the address in unmanaged code.
+			Decompressor = MSCabDecompressor.CreateInstance();
 
 			// open cabinet:
-			_pNativeCabinet = NativeMethods.mspack_invoke_mscab_decompressor_open(_pDecompressor, _pCabinetFilenamePinned);
+			_pNativeCabinet = NativeMethods.mspack_invoke_mscab_decompressor_open(Decompressor, _pCabinetFilenamePinned);
 			if (_pNativeCabinet == IntPtr.Zero)
 			{
-				var lasterror = NativeMethods.mspack_invoke_mscab_decompressor_last_error(_pDecompressor);
+				var lasterror = NativeMethods.mspack_invoke_mscab_decompressor_last_error(Decompressor);
 				throw new Exception("Failed to open cabinet. Last error:" + lasterror);
 			}
 			//Marshal.PtrToStructure(_pNativeCabinet, _nativeCabinet);
 			_nativeCabinet = (NativeMethods.mscabd_cabinet) Marshal.PtrToStructure(_pNativeCabinet, typeof (NativeMethods.mscabd_cabinet));
 		}
 
-		public string LocalFilePath
-		{
-			get { return _cabinetFilename; }
-		}
+	    private string LocalFilePath { get; set; }
 
-		~MSCabinet()
+	    ~MSCabinet()
 		{
 			Close(false);
 		}
-		
-		public void Close(bool isDisposing)
+
+	    private void Close(bool isDisposing)
 		{
-			Debug.Print("Disposing MSCabinet for {0}. isDisposing:{1}", _cabinetFilename, isDisposing);
+			Debug.Print("Disposing MSCabinet for {0}. isDisposing:{1}", LocalFilePath, isDisposing);
 			if (_pNativeCabinet != IntPtr.Zero)
 			{
-				NativeMethods.mspack_invoke_mscab_decompressor_close(_pDecompressor, _pNativeCabinet);
+				NativeMethods.mspack_invoke_mscab_decompressor_close(Decompressor, _pNativeCabinet);
 				_pNativeCabinet = IntPtr.Zero;
 			}
 
-			if (_pDecompressor != IntPtr.Zero)
+			if (Decompressor != IntPtr.Zero)
 			{
-				MSCabDecompressor.DestroyInstance(_pDecompressor);
-				_pDecompressor = IntPtr.Zero;
+				MSCabDecompressor.DestroyInstance(Decompressor);
+				Decompressor = IntPtr.Zero;
 			}
 			if (_pCabinetFilenamePinned!= IntPtr.Zero)
 			{
@@ -91,13 +86,13 @@ namespace LibMSPackN
 		{
 			if (_pNativeCabinet == IntPtr.Zero)
 				throw new InvalidOperationException("Cabinet not initialized.");
-			if (_pDecompressor == IntPtr.Zero)
+			if (Decompressor == IntPtr.Zero)
 				throw new InvalidOperationException("Decompressor not initialized.");
 		}
 
 		internal bool IsInvalidState
 		{
-			get { return _pNativeCabinet == IntPtr.Zero || _pDecompressor == IntPtr.Zero; }
+			get { return _pNativeCabinet == IntPtr.Zero || Decompressor == IntPtr.Zero; }
 		}
 
 		public MSCabinetFlags Flags
@@ -127,21 +122,14 @@ namespace LibMSPackN
 			}
 		}
 
-		internal IntPtr Decompressor
-		{
-			get { return _pDecompressor; }
-		}
+	    internal IntPtr Decompressor { get; private set; }
 
-		public IEnumerable<MSCompressedFile> GetFiles()
+	    public IEnumerable<MSCompressedFile> GetFiles()
 		{
 			ThrowOnInvalidState();
 			
-			IntPtr pNextFile = _nativeCabinet.files;
-			MSCompressedFile containedFile;
-			if (pNextFile != IntPtr.Zero)
-				containedFile = new MSCompressedFile(this, pNextFile);
-			else
-				containedFile = null;
+			var pNextFile = _nativeCabinet.files;
+	        var containedFile = pNextFile != IntPtr.Zero ? new MSCompressedFile(this, pNextFile) : null;
 
 			while (containedFile != null)
 			{
@@ -156,27 +144,13 @@ namespace LibMSPackN
 		/// <param name="nextCabinet">The cab to append to this one.</param>
 		public void Append(MSCabinet nextCabinet)
 		{
-			var result = NativeMethods.mspack_invoke_mscab_decompressor_append(_pDecompressor, _pNativeCabinet, nextCabinet._pNativeCabinet);
+			var result = NativeMethods.mspack_invoke_mscab_decompressor_append(Decompressor, _pNativeCabinet, nextCabinet._pNativeCabinet);
 			if (result != NativeMethods.MSPACK_ERR.MSPACK_ERR_OK)
-				throw new Exception(string.Format("Error '{0}' appending cab '{1}' to {2}.", result, nextCabinet._cabinetFilename, _cabinetFilename));
+				throw new Exception(string.Format("Error '{0}' appending cab '{1}' to {2}.", result, nextCabinet.LocalFilePath, LocalFilePath));
 			
 			// after a successul append remarshal over the nativeCabinet struct5ure as it now represents the combined state.
 			_nativeCabinet = (NativeMethods.mscabd_cabinet)Marshal.PtrToStructure(_pNativeCabinet, typeof(NativeMethods.mscabd_cabinet));
 			nextCabinet._nativeCabinet = (NativeMethods.mscabd_cabinet)Marshal.PtrToStructure(nextCabinet._pNativeCabinet, typeof(NativeMethods.mscabd_cabinet));
 		}
-	}
-
-	/// <summary>
-	/// Used with <see cref="MSCabinet.Flags"/>
-	/// </summary>
-	[Flags]
-	public enum MSCabinetFlags
-	{
-		/** Cabinet header flag: cabinet has a predecessor */
-		MSCAB_HDR_PREVCAB = 0x01,
-		/** Cabinet header flag: cabinet has a successor */
-		MSCAB_HDR_NEXTCAB = 0x02,
-		/** Cabinet header flag: cabinet has reserved header space */
-		MSCAB_HDR_RESV = 0x04
 	}
 }

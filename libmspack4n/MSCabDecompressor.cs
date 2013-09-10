@@ -23,11 +23,9 @@ namespace LibMSPackN
 
 		public void Dispose()
 		{
-			if (_pDecompressor != IntPtr.Zero)
-			{
-				DestroyInstance(_pDecompressor);
-				_pDecompressor = IntPtr.Zero;
-			}
+		    if (_pDecompressor == IntPtr.Zero) return;
+		    DestroyInstance(_pDecompressor);
+		    _pDecompressor = IntPtr.Zero;
 		}
 
 		/// <summary>
@@ -78,7 +76,7 @@ namespace LibMSPackN
 			}
 		}
 
-		public bool IsInvalidState
+	    private bool IsInvalidState
 		{
 			get { return _pDecompressor == IntPtr.Zero; }
 		}
