@@ -5,18 +5,18 @@ namespace LibMSPackN
 	/// <summary>
 	///  Used internally to manage the decompressor. Technically you need one of these per thread (see code comments in libmspack, but I'm assuming single threaded or safe multithreaded access here).
 	/// </summary>
-	internal sealed class MsCabDecompressor : IDisposable
+	internal sealed class MSCabDecompressor : IDisposable
 	{
 		private IntPtr _pDecompressor;
-		private static volatile MsCabDecompressor _default;
+		private static volatile MSCabDecompressor _default;
 		private static readonly object SyncRoot = new object();
 
-		private MsCabDecompressor()
+		private MSCabDecompressor()
 		{
 			_pDecompressor = CreateInstance();
 		}
 
-		~MsCabDecompressor()
+		~MSCabDecompressor()
 		{
 			Dispose();
 		}
@@ -60,7 +60,7 @@ namespace LibMSPackN
 		/// <summary>
 		/// Returns the defalut instance of a decompressor. DO NOT DISPOSE IT!
 		/// </summary>
-		public static MsCabDecompressor Default
+		public static MSCabDecompressor Default
 		{
 			get
 			{
@@ -69,7 +69,7 @@ namespace LibMSPackN
 					lock (SyncRoot)
 					{
 						if (_default == null)
-							_default = new MsCabDecompressor();
+							_default = new MSCabDecompressor();
 					}
 				}
 				return _default;
@@ -84,7 +84,7 @@ namespace LibMSPackN
 		private void ThrowOnInvalidState()
 		{
 			if (IsInvalidState)
-				throw new ObjectDisposedException(typeof(MsCabDecompressor).Name);
+				throw new ObjectDisposedException(typeof(MSCabDecompressor).Name);
 		}
 	}
 }

@@ -5,15 +5,15 @@ using System.Runtime.InteropServices;
 namespace LibMSPackN
 {
 	/// <summary>
-	/// Represents a file contained inside of a cab. Returned from <see cref="MsCabinet.GetFiles()"/>.
+	/// Represents a file contained inside of a cab. Returned from <see cref="MSCabinet.GetFiles()"/>.
 	/// </summary>
-	public sealed class MsCompressedFile
+	public sealed class MSCompressedFile
 	{
-		private readonly MsCabinet _parentCabinet;
+		private readonly MSCabinet _parentCabinet;
 		private readonly NativeMethods.mscabd_file _nativeFile;
 		private readonly IntPtr _pNativeFile;
 
-		internal MsCompressedFile(MsCabinet parentCabinet, IntPtr pNativeFile)
+		internal MSCompressedFile(MSCabinet parentCabinet, IntPtr pNativeFile)
 		{
 			//NOTE: we don't need to explicitly clean the nativeFile up. It is cleaned up by the parent cabinet.
 			_parentCabinet = parentCabinet;
@@ -47,11 +47,11 @@ namespace LibMSPackN
 			}
 		}
 
-		public MsCompressedFile Next
+		public MSCompressedFile Next
 		{
 			get
 			{
-			    var next = _nativeFile.next != IntPtr.Zero ? new MsCompressedFile(_parentCabinet, _nativeFile.next) : null;
+			    var next = _nativeFile.next != IntPtr.Zero ? new MSCompressedFile(_parentCabinet, _nativeFile.next) : null;
 			    return next;
 			}
 		}

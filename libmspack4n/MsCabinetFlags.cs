@@ -3,10 +3,10 @@
     using System;
 
     /// <summary>
-    /// Used with <see cref="MsCabinet.Flags"/>
+    /// Used with <see cref="MSCabinet.Flags"/>
     /// </summary>
     [Flags]
-    public enum MsCabinetFlags
+    public enum MSCabinetFlags
     {
         /** Cabinet header flag: cabinet has a predecessor */
         MscabHdrPrevcab = 0x01,

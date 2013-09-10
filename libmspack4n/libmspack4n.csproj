@@ -46,10 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MsCabDecompressor.cs" />
-    <Compile Include="MsCabinetFlags.cs" />
-    <Compile Include="MsCompressedFile.cs" />
-    <Compile Include="MsCabinet.cs" />
+    <Compile Include="MSCabDecompressor.cs" />
+    <Compile Include="MSCabinetFlags.cs" />
+    <Compile Include="MSCompressedFile.cs" />
+    <Compile Include="MSCabinet.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

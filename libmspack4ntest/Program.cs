@@ -19,8 +19,8 @@ namespace LibMSPackNTest
 			var cabFilename1  = Path.Combine(root, "Disk1.CAB");
 			var cabFilename2 = Path.Combine(root, "Disk2.CAB");
 			
-			using (var cab1 = new MsCabinet(cabFilename1))
-			using (var cab2 = new MsCabinet(cabFilename2))
+			using (var cab1 = new MSCabinet(cabFilename1))
+			using (var cab2 = new MSCabinet(cabFilename2))
 			{
 				cab1.Append(cab2);
 				ExplodeCab(cab1, OutDir(cabFilename1));
@@ -33,7 +33,7 @@ namespace LibMSPackNTest
 			Console.WriteLine("Files in " + cabinetFilename + ":");
 			try
 			{
-				using (var cab = new MsCabinet(cabinetFilename))
+				using (var cab = new MSCabinet(cabinetFilename))
 				{
 					var outDir = OutDir(cabinetFilename);
 					ExplodeCab(cab, outDir);
@@ -56,7 +56,7 @@ namespace LibMSPackNTest
 		    return outDir;
 		}
 
-		private static void ExplodeCab(MsCabinet cab, string outDir)
+		private static void ExplodeCab(MSCabinet cab, string outDir)
 		{
 			string cabinetFilename;
 			

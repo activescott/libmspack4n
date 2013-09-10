@@ -24,17 +24,17 @@ namespace LibMSPackN
 	/// }
 	/// </code>
 	/// </remarks>
-	public sealed class MsCabinet : IDisposable
+	public sealed class MSCabinet : IDisposable
 	{	
 		private NativeMethods.mscabd_cabinet _nativeCabinet = new NativeMethods.mscabd_cabinet();
 		private IntPtr _pNativeCabinet;
 	    private IntPtr _pCabinetFilenamePinned;
 
-	    public MsCabinet(string cabinetFilename)
+	    public MSCabinet(string cabinetFilename)
 		{
 			LocalFilePath = cabinetFilename;
 			_pCabinetFilenamePinned = Marshal.StringToCoTaskMemAnsi(LocalFilePath);// needs to be pinned as we use the address in unmanaged code.
-			Decompressor = MsCabDecompressor.CreateInstance();
+			Decompressor = MSCabDecompressor.CreateInstance();
 
 			// open cabinet:
 			_pNativeCabinet = NativeMethods.mspack_invoke_mscab_decompressor_open(Decompressor, _pCabinetFilenamePinned);
@@ -49,7 +49,7 @@ namespace LibMSPackN
 
 	    private string LocalFilePath { get; set; }
 
-	    ~MsCabinet()
+	    ~MSCabinet()
 		{
 			Close(false);
 		}
@@ -65,7 +65,7 @@ namespace LibMSPackN
 
 			if (Decompressor != IntPtr.Zero)
 			{
-				MsCabDecompressor.DestroyInstance(Decompressor);
+				MSCabDecompressor.DestroyInstance(Decompressor);
 				Decompressor = IntPtr.Zero;
 			}
 			if (_pCabinetFilenamePinned!= IntPtr.Zero)
@@ -95,12 +95,12 @@ namespace LibMSPackN
 			get { return _pNativeCabinet == IntPtr.Zero || Decompressor == IntPtr.Zero; }
 		}
 
-		public MsCabinetFlags Flags
+		public MSCabinetFlags Flags
 		{
 			get
 			{
 				ThrowOnInvalidState();
-				return (MsCabinetFlags)_nativeCabinet.flags;
+				return (MSCabinetFlags)_nativeCabinet.flags;
 			}
 		}
 
@@ -124,12 +124,12 @@ namespace LibMSPackN
 
 	    internal IntPtr Decompressor { get; private set; }
 
-	    public IEnumerable<MsCompressedFile> GetFiles()
+	    public IEnumerable<MSCompressedFile> GetFiles()
 		{
 			ThrowOnInvalidState();
 			
 			var pNextFile = _nativeCabinet.files;
-	        var containedFile = pNextFile != IntPtr.Zero ? new MsCompressedFile(this, pNextFile) : null;
+	        var containedFile = pNextFile != IntPtr.Zero ? new MSCompressedFile(this, pNextFile) : null;
 
 			while (containedFile != null)
 			{
@@ -142,7 +142,7 @@ namespace LibMSPackN
 		/// Appends specified cabinet to this one, forming or extending a cabinet set.
 		/// </summary>
 		/// <param name="nextCabinet">The cab to append to this one.</param>
-		public void Append(MsCabinet nextCabinet)
+		public void Append(MSCabinet nextCabinet)
 		{
 			var result = NativeMethods.mspack_invoke_mscab_decompressor_append(Decompressor, _pNativeCabinet, nextCabinet._pNativeCabinet);
 			if (result != NativeMethods.MSPACK_ERR.MSPACK_ERR_OK)
