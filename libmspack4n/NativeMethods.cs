@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 
 namespace LibMSPackN
 {
@@ -389,5 +390,53 @@ namespace LibMSPackN
 
 		// ReSharper restore EnumUnderlyingTypeIsInt
 		// ReSharper restore InconsistentNaming
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		internal static extern SafeFileHandle CreateFile(
+			string lpFileName, FileAccess dwDesiredAccess,
+			FileShare dwShareMode, IntPtr lpSecurityAttributes,
+			CreationDisposition dwCreationDisposition,
+			FileAttributes dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+		internal enum FileAccess : uint
+		{
+			FILE_READ_ATTRIBUTES = 0x80,
+			FILE_WRITE_ATTRIBUTES = 0x100,
+		}
+
+		internal enum FileShare : uint
+		{
+			FILE_SHARE_READ = 1,
+			FILE_SHARE_WRITE = 2,
+			FILE_SHARE_DELETE = 4,
+		}
+
+		internal enum CreationDisposition : uint
+		{
+			OPEN_EXISTING = 3,
+		}
+
+		internal enum FileAttributes : uint
+		{
+			FILE_ATTRIBUTE_NORMAL = 0x80,
+			FILE_FLAG_BACKUP_SEMANTICS = 0x02000000,
+			INVALID_FILE_ATTRIBUTES = 0xffffffff,
+		}
+	
+		// This binding only allows setting creation and last write times.
+		// The last access time parameter must be zero; that time is not
+		// modified.
+		[DllImport("kernel32.dll", SetLastError = true)]
+		internal static extern bool SetFileTime(
+			IntPtr hFile,
+			ref long lpCreationTime,
+			IntPtr lpLastAccessTime,
+			ref long lpLastWriteTime);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		internal static extern uint GetFileAttributes(string lpFileName);
+
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		internal static extern bool SetFileAttributes(string lpFileName, uint dwFileAttributes);
 	}
 }
