@@ -65,7 +65,8 @@ namespace LibMSPackN
 		{
 			ThrowOnInvalidState();
 			IntPtr pDestinationFilename = IntPtr.Zero;
-			string longDestinationFilename = longFilename(destinationFilename);
+            //TODO: Delete the file if it exists. If there are any issues ovewriting the dest file (e.g. it's readonly) MSPACK gives essentialy no error information.
+			string longDestinationFilename = PathEx.EnsureLongPathPrefix(destinationFilename);
 			try
 			{
 				pDestinationFilename = Marshal.StringToCoTaskMemAnsi(longDestinationFilename);
@@ -113,18 +114,6 @@ namespace LibMSPackN
 				if (pDestinationFilename != IntPtr.Zero)
 					Marshal.FreeCoTaskMem(pDestinationFilename);
 			}
-		}
-
-		// Convert a filename (assumed to be absolute) to the "extended" form
-		// that permits it to be longer than 260 characters.
-		private string longFilename(string filename)
-		{
-			if (filename.StartsWith("\\\\?\\"))
-				return filename;		// Already on long form.
-			else if (filename.StartsWith("\\\\"))
-				return "\\\\?\\UNC\\" + filename.Substring(2);
-			else
-				return "\\\\?\\" + filename;
 		}
 
 		private DateTime GetModifiedTime()

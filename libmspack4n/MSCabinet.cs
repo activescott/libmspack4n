@@ -34,7 +34,8 @@ namespace LibMSPackN
 
 		public MSCabinet(string cabinetFilename)
 		{
-			_cabinetFilename = cabinetFilename;
+            cabinetFilename = PathEx.EnsureLongPathPrefix(cabinetFilename);
+            _cabinetFilename = cabinetFilename;
 			_pCabinetFilenamePinned = Marshal.StringToCoTaskMemAnsi(_cabinetFilename);// needs to be pinned as we use the address in unmanaged code.
 			_pDecompressor = MSCabDecompressor.CreateInstance();
 
