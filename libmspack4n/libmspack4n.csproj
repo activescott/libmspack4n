@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LibMSPackN</RootNamespace>
     <AssemblyName>libmspackn</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -62,8 +62,13 @@
     <Compile Include="MSCompressedFile.cs" />
     <Compile Include="MSCabinet.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="PathEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\LessIO\src\LessIO\LessIO.csproj">
+      <Project>{51482e40-c227-4c5a-9b55-42440c041d55}</Project>
+      <Name>LessIO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

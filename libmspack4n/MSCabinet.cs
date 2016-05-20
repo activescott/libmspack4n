@@ -1,4 +1,5 @@
 ﻿using System;
+using LessIO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -34,7 +35,7 @@ namespace LibMSPackN
 
 		public MSCabinet(string cabinetFilename)
 		{
-            cabinetFilename = PathEx.EnsureLongPathPrefix(cabinetFilename);
+            cabinetFilename = new Path(cabinetFilename).WithWin32LongPathPrefix();
             _cabinetFilename = cabinetFilename;
 			_pCabinetFilenamePinned = Marshal.StringToCoTaskMemAnsi(_cabinetFilename);// needs to be pinned as we use the address in unmanaged code.
 			_pDecompressor = MSCabDecompressor.CreateInstance();
