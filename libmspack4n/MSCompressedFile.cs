@@ -1,14 +1,13 @@
 ﻿using System;
-using System.IO;
+using LessIO;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
 
 namespace LibMSPackN
 {
-	/// <summary>
-	/// Represents a file contained inside of a cab. Returned from <see cref="MSCabinet.GetFiles()"/>.
-	/// </summary>
-	public sealed class MSCompressedFile
+    /// <summary>
+    /// Represents a file contained inside of a cab. Returned from <see cref="MSCabinet.GetFiles()"/>.
+    /// </summary>
+    public sealed class MSCompressedFile
 	{
 		private readonly MSCabinet _parentCabinet;
 		private readonly NativeMethods.mscabd_file _nativeFile;
@@ -66,48 +65,28 @@ namespace LibMSPackN
 			ThrowOnInvalidState();
 			IntPtr pDestinationFilename = IntPtr.Zero;
             //TODO: Delete the file if it exists. If there are any issues ovewriting the dest file (e.g. it's readonly) MSPACK gives essentialy no error information.
-			string longDestinationFilename = PathEx.EnsureLongPathPrefix(destinationFilename);
-			try
+			string longDestinationFilename = new Path(destinationFilename).WithWin32LongPathPrefix();
+            try
 			{
 				pDestinationFilename = Marshal.StringToCoTaskMemAnsi(longDestinationFilename);
 				var result = NativeMethods.mspack_invoke_mscab_decompressor_extract(_parentCabinet.Decompressor, _pNativeFile, pDestinationFilename);
 				if (result != NativeMethods.MSPACK_ERR.MSPACK_ERR_OK)
 					throw new Exception(string.Format("Error '{0}' extracting file to {1}.", result, longDestinationFilename));
 
-				// Long-form filenames are not supported by the .NET system libraries,
-				// so we must do win32 calls to set file time-stamps and attributes.
-				SafeFileHandle h = NativeMethods.CreateFile(
-					longDestinationFilename,
-					NativeMethods.FileAccess.FILE_READ_ATTRIBUTES | NativeMethods.FileAccess.FILE_WRITE_ATTRIBUTES,
-					NativeMethods.FileShare.FILE_SHARE_READ | NativeMethods.FileShare.FILE_SHARE_WRITE | NativeMethods.FileShare.FILE_SHARE_DELETE,
-					IntPtr.Zero,
-					NativeMethods.CreationDisposition.OPEN_EXISTING,
-					NativeMethods.FileAttributes.FILE_ATTRIBUTE_NORMAL | NativeMethods.FileAttributes.FILE_FLAG_BACKUP_SEMANTICS,
-					IntPtr.Zero);
-				if (h.IsInvalid)
-					throw new Exception(string.Format("Error {0} opening {1}.", Marshal.GetLastWin32Error(), longDestinationFilename));
-				using (h)
-				{
-					var modifiedTime = GetModifiedTime().ToFileTime();
-					if (!NativeMethods.SetFileTime(
-							h.DangerousGetHandle(),
-							ref modifiedTime, IntPtr.Zero, ref modifiedTime))
-						throw new Exception(string.Format("Error {0} setting times for {1}.", Marshal.GetLastWin32Error(), longDestinationFilename));
-				}
-				var theAttributes = NativeMethods.GetFileAttributes(longDestinationFilename);
-				if (theAttributes == (uint)NativeMethods.FileAttributes.INVALID_FILE_ATTRIBUTES)
-					throw new Exception(string.Format("Error {0} getting attributes of {1}.", Marshal.GetLastWin32Error(), longDestinationFilename));
-	
+                FileSystem.SetLastWriteTime(new LessIO.Path(longDestinationFilename), GetModifiedTime());
+
+                var theAttributes = FileSystem.GetAttributes(new LessIO.Path(longDestinationFilename));
+                
 				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_ARCH) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_ARCH)
-					theAttributes |= (uint)FileAttributes.Archive;
+					theAttributes |= FileAttributes.Archive;
 				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_HIDDEN) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_HIDDEN)
-					theAttributes |= (uint)FileAttributes.Hidden;
+					theAttributes |= FileAttributes.Hidden;
 				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_RDONLY) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_RDONLY)
-					theAttributes |= (uint)FileAttributes.ReadOnly;
+					theAttributes |= FileAttributes.ReadOnly;
 				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_SYSTEM) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_SYSTEM)
-					theAttributes |= (uint)FileAttributes.System;
-				if (!NativeMethods.SetFileAttributes(longDestinationFilename, theAttributes))
-					throw new Exception(string.Format("Error {0} setting attributes of {1}.", Marshal.GetLastWin32Error(), longDestinationFilename));
+					theAttributes |= FileAttributes.System;
+
+                FileSystem.SetAttributes(new LessIO.Path(longDestinationFilename), theAttributes);
 			}
 			finally
 			{
