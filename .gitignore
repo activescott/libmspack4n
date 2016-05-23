@@ -1,12 +1,17 @@
 *.obj
 Packages/libmspack/config.h
+Packages/libmspack/mspack/config.h
 #See winbuild.bat for why debug.c.ignore
 Packages/libmspack/mspack/debug.c.ignore 
 Packages/libmspack/mspack/mspack.dll
 Packages/libmspack/mspack/mspack.lib
 Packages/libmspack/mspack/mspack.exp
+Packages/libmspack/mspack/bin/*.*
 *.suo
+*.csproj.user
+/src/.deploy
 libmspack4n/bin/
 libmspack4n/obj/
 libmspack4ntest/bin/
 libmspack4ntest/obj/
+/.deploy
