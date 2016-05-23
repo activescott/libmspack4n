@@ -1,12 +1,16 @@
+# mspack c code ignores
 *.obj
 Packages/libmspack/config.h
 Packages/libmspack/mspack/config.h
-#See winbuild.bat for why debug.c.ignore
-Packages/libmspack/mspack/debug.c.ignore 
 Packages/libmspack/mspack/mspack.dll
 Packages/libmspack/mspack/mspack.lib
 Packages/libmspack/mspack/mspack.exp
 Packages/libmspack/mspack/bin/*.*
+
+# known nuget packages
+/Packages/LessIO.0.2.0/
+
+# misc C# stuff
 *.suo
 *.csproj.user
 /src/.deploy

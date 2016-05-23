@@ -63,8 +63,6 @@ namespace LibMSPackNTest
 
 		private static void ExplodeCab(MSCabinet cab, string outDir)
 		{
-			string cabinetFilename;
-			
 			Directory.CreateDirectory(outDir);
 			foreach (var file in cab.GetFiles())
 			{

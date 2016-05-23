@@ -178,24 +178,23 @@
       <PackageDir>$(TheDeployDir)\nuget-package</PackageDir>
     </PropertyGroup>
 
-    <!--
     <Copy
-			SourceFiles="lessio.nuspec"
+			SourceFiles="$(TheProjName).nuspec"
 			DestinationFolder="$(PackageDir)"
 		/>
     <XmlPoke
-			XmlInputPath="$(PackageDir)\lessio.nuspec"
+			XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
 			Query="//package/metadata/version"
 			Value="$(TheVersion)"
 		/>
     <XmlPoke
-          XmlInputPath="$(PackageDir)\lessio.nuspec"
+          XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
           Query="//package/metadata/description"
           Value="$(Description)"
 		/>
     
     <Exec
-			Command="nuget pack &quot;$(PackageDir)\lessio.nuspec&quot; -NoDefaultExcludes -Verbosity Normal" 
+			Command="nuget pack &quot;$(PackageDir)\$(TheProjName).nuspec&quot; -NoDefaultExcludes -Verbosity Normal" 
 			WorkingDirectory="$(PackageDir)"
 			ContinueOnError="true"
 		>
@@ -207,11 +206,11 @@
 			Text="nuget failed. Make sure you have nuget installed and accessible from the command line. See http://docs.nuget.org/docs/reference/command-line-reference"
 		/>
 		<Message 
-			Text="Nuget package built. To test the nuget package run `nuget install lessio -source $(PackageDir)`"
+			Text="Nuget package built. To test the nuget package run `nuget install $(TheProjName) -source $(PackageDir)`"
 			Importance="high"
 		/>
-    -->
-		<Message
+		
+    <Message
 			Importance="high"
 			Text="
 Next Steps to publish:

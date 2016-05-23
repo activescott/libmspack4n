@@ -14,6 +14,6 @@
 [assembly: System.Reflection.AssemblyCompany("Scott Willeke")]
 [assembly: System.Reflection.AssemblyVersion("0.0.0.1")]
 [assembly: System.Reflection.AssemblyFileVersion("0.0.0.1")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright Scott Willeke ©2016")]
+[assembly: System.Reflection.AssemblyCopyright("Copyright Scott Willeke ©2013-2016")]
 
 
