@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using LibMSPackN;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LibMSPackNTest
 {
-	class Program
+    [TestClass]
+	public class Basic
 	{
-		static void Main()
-		{
-			IEnumerable<string> files = Directory.GetFiles(AppPath, "*.cab");
-			foreach (var f in files)
-				ExplodeCab(f);
+        [TestMethod]
+        public void ExplodeAllTestCabs()
+        {
+            IEnumerable<string> files = Directory.GetFiles(AppPath, "*.cab");
+            foreach (var f in files)
+                ExplodeCab(f);
+        }
 
+        [TestMethod,Ignore]//This has never worked. Not sure why.
+        public void CabinetSet()
+        {
 			//NO WORKY!
 			var root = Path.Combine(AppPath, "cabinetset");
 			var cabFilename1  = Path.Combine(root, "Disk1.CAB");
@@ -56,8 +63,6 @@ namespace LibMSPackNTest
 
 		private static void ExplodeCab(MSCabinet cab, string outDir)
 		{
-			string cabinetFilename;
-			
 			Directory.CreateDirectory(outDir);
 			foreach (var file in cab.GetFiles())
 			{

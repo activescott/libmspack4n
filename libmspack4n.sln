@@ -7,6 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libmspack4n", "libmspack4n\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libmspack4ntest", "libmspack4ntest\libmspack4ntest.csproj", "{4B676BE7-A23F-4A9D-B114-5C7D3513532B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1860AA41-6D07-4F02-9554-BC4DDFBA022D}"
+	ProjectSection(SolutionItems) = preProject
+		build.bat = build.bat
+		.build\IncludeNativeLib.targets = .build\IncludeNativeLib.targets
+		.build\libmspack4n.msbuild = .build\libmspack4n.msbuild
+		.build\libmspack4n.nuspec = .build\libmspack4n.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
