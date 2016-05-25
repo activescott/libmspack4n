@@ -12,8 +12,8 @@
 [assembly: System.Reflection.AssemblyDescription("A .NET version of the libmspack libmspack library that enables programatically re" +
     "ading and extracting the content of Microsoft cab files.")]
 [assembly: System.Reflection.AssemblyCompany("Scott Willeke")]
-[assembly: System.Reflection.AssemblyVersion("0.0.0.1")]
-[assembly: System.Reflection.AssemblyFileVersion("0.0.0.1")]
+[assembly: System.Reflection.AssemblyVersion("0.6.0.0")]
+[assembly: System.Reflection.AssemblyFileVersion("0.6.0.0")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright Scott Willeke ©2013-2016")]
 
 

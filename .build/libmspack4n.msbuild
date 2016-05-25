@@ -95,9 +95,8 @@
 
 	</Target>
 
-	<Target Name="Clean">
-		<Delete Files="$(TheDeployDir)\*.*"
-            />
+	<Target Name="Clean" DependsOnTargets="Init">
+    <RemoveDir Directories="$(TheDeployDir)" />
 	</Target>
 
 	<Target Name="Build" DependsOnTargets="Init;Validate;SetProjectVersion;BuildMspack">
@@ -172,15 +171,21 @@
 
 	<Target Name="NugetPackage" DependsOnTargets="Deploy">
 		<!-- 
-			See http://docs.nuget.org/Create/Creating-and-Publishing-a-Package
+			See http://stackoverflow.com/a/30316946/51061 (for how to deal with native libs)
+      and http://docs.nuget.org/Create/Creating-and-Publishing-a-Package (for general nuget packaging info)
 		 -->
     <PropertyGroup>
       <PackageDir>$(TheDeployDir)\nuget-package</PackageDir>
     </PropertyGroup>
 
     <Copy
-			SourceFiles="$(TheProjName).nuspec"
+			SourceFiles="$(TheProjName).nuspec;IncludeNativeLib.targets"
 			DestinationFolder="$(PackageDir)"
+		/>
+    <XmlPoke
+			XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
+			Query="//package/metadata/id"
+			Value="$(TheProjName)"
 		/>
     <XmlPoke
 			XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
