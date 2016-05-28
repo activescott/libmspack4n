@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using LibMSPackN;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace LibMSPackNTest
 {
-    [TestClass]
 	public class Basic
 	{
-        [TestMethod]
+        [Fact]
         public void ExplodeAllTestCabs()
         {
             IEnumerable<string> files = Directory.GetFiles(AppPath, "*.cab");
@@ -18,7 +17,7 @@ namespace LibMSPackNTest
                 ExplodeCab(f);
         }
 
-        [TestMethod,Ignore]//This has never worked. Not sure why.
+        [Fact(Skip= "This has never worked. Not sure why.")]
         public void CabinetSet()
         {
 			//NO WORKY!
