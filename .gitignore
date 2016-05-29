@@ -1,17 +1,23 @@
-# mspack c code ignores
-*.obj
-Packages/libmspack/config.h
-Packages/libmspack/mspack/config.h
-Packages/libmspack/mspack/mspack.dll
-Packages/libmspack/mspack/mspack.lib
-Packages/libmspack/mspack/mspack.exp
-Packages/libmspack/mspack/bin/*.*
+# Nuget: http://docs.nuget.org/consume/package-restore#omitting-packages-from-source-control
+## Ignore NuGet Packages
+*.nupkg
+## Ignore the packages folder
+**/packages/*
+## except build/, which is used as an MSBuild target.
+!**/packages/build/
+## Uncomment if necessary however generally it will be regenerated when needed
+!**/packages/repositories.config
 
-# nuget packages
-/Packages/LessIO*
-/Packages/xunit*
+# mspack c code ignores
+lib/libmspack/config.h
+lib/libmspack/mspack/config.h
+lib/libmspack/mspack/mspack.dll
+lib/libmspack/mspack/mspack.lib
+lib/libmspack/mspack/mspack.exp
+lib/libmspack/mspack/bin/*.*
 
 # misc C# stuff
+*.obj
 *.suo
 *.csproj.user
 /src/.deploy
