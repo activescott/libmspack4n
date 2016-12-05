@@ -4,8 +4,8 @@
     <id>Libmspack</id>
     <version>$version$</version>
     <authors>Scott Willeke</authors>
-    <licenseUrl>https://github.com/activescott/LessIO/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/activescott/LessIO</projectUrl>
+    <licenseUrl>https://github.com/activescott/libmspack4n/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/activescott/libmspack4n</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright @2013-2016</copyright>
