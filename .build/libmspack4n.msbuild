@@ -21,8 +21,8 @@
     <TheProjName>libmspack4n</TheProjName>
 		<TheZipFileName>$(TheProjName)-v$(TheVersion).zip</TheZipFileName>
 
-    <MSPackSrcDir>$(RootDir)\Packages\libmspack\mspack</MSPackSrcDir>
-    <MSPackOutDir>$(RootDir)\Packages\libmspack\mspack\bin</MSPackOutDir>
+    <MSPackSrcDir>$(RootDir)\lib\libmspack\mspack</MSPackSrcDir>
+    <MSPackOutDir>$(RootDir)\lib\libmspack\mspack\bin</MSPackOutDir>
   </PropertyGroup>
 
 	<ItemGroup>
