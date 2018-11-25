@@ -52,7 +52,7 @@ deploy:
 
 on_finish:
   - cmd: 'dir /s %APPVEYOR_BUILD_FOLDER%\.deploy'
-
+  - cmd: 'dir /s %APPVEYOR_BUILD_FOLDER%\libmspack4ntest\bin\Release'
 ##### KEEP RDP ACCESS #####
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 #on_finish:

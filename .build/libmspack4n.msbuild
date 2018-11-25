@@ -38,7 +38,8 @@
 		<DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.pdb"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\libmspack4ntest.dll"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\libmspack4ntest.pdb"></DeployFiles>
-		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.*.dll"></DeployFiles>
+		<!-- Enables running tests in deploy dir: -->
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.*"></DeployFiles>
 	</ItemGroup>
 
 	<Target Name="Init">
@@ -171,9 +172,9 @@
 		<MakeDir Directories="$(TheDeployDir)" />
 
 		<Copy
-						SourceFiles="%(DeployFiles.FullPath)"
-						DestinationFolder="$(TheDeployDir)"
-				/>
+			SourceFiles="%(DeployFiles.FullPath)"
+			DestinationFolder="$(TheDeployDir)"
+		/>
 	</Target>
 
 	<Target Name="Zip" DependsOnTargets="Deploy">
