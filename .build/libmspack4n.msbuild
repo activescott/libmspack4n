@@ -4,35 +4,40 @@
 	References:
 		MSBuild: http://msdn.microsoft.com/en-us/library/vstudio/dd393574.aspx
 		MSBuild Well-Known Properties: https://msdn.microsoft.com/en-us/library/ms164309.aspx
-    MSBuild Task Reference: https://msdn.microsoft.com/en-us/library/7z253716.aspx
+		MSBuild Task Reference: https://msdn.microsoft.com/en-us/library/7z253716.aspx
 	-->
 
-  <PropertyGroup>
-    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)</MSBuildCommunityTasksPath>
-  </PropertyGroup>
-  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+	<PropertyGroup>
+		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)</MSBuildCommunityTasksPath>
+	</PropertyGroup>
+	<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
 
-  <PropertyGroup>
+	<PropertyGroup>
 		<RootDir>..\</RootDir>
-    <BuildDir>$(MSBuildProjectDirectory)</BuildDir>
-    <TheDeployDir>$(RootDir)\.deploy</TheDeployDir>
+		<BuildDir>$(MSBuildProjectDirectory)</BuildDir>
+		<TheDeployDir>$(RootDir)\.deploy</TheDeployDir>
 		<AssemblyCopyright>Copyright Scott Willeke ©2013-2016</AssemblyCopyright>
-    <Description>A .NET version of the libmspack libmspack library that enables programatically reading and extracting the content of Microsoft cab files.</Description>
-    <TheProjName>libmspack4n</TheProjName>
+		<Description>A .NET version of the libmspack libmspack library that enables programatically reading and extracting the content of Microsoft cab files.</Description>
+		<TheProjName>libmspack4n</TheProjName>
 		<TheZipFileName>$(TheProjName)-v$(TheVersion).zip</TheZipFileName>
 
-    <MSPackSrcDir>$(RootDir)\lib\libmspack\mspack</MSPackSrcDir>
-    <MSPackOutDir>$(RootDir)\lib\libmspack\mspack\bin</MSPackOutDir>
-  </PropertyGroup>
+		<MSPackSrcDir>$(RootDir)\lib\libmspack\mspack</MSPackSrcDir>
+		<MSPackOutDir>$(RootDir)\lib\libmspack\mspack\bin</MSPackOutDir>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<TheProjects Include="$(RootDir)\libmspack4n\libmspack4n.csproj"></TheProjects>
-    <TheProjects Include="$(RootDir)\libmspack4ntest\libmspack4ntest.csproj"></TheProjects>
-  </ItemGroup>
+		<TheProjects Include="$(RootDir)\libmspack4ntest\libmspack4ntest.csproj"></TheProjects>
+	</ItemGroup>
 
 	<ItemGroup>
 		<DeployFiles Include="$(MSPackOutDir)\mspack.dll"></DeployFiles>
-    <DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.dll"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\packages\LessIO.0.3.0\lib\net40\LessIO.dll"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.dll"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.pdb"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\libmspack4ntest.dll"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\libmspack4ntest.pdb"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.*.dll"></DeployFiles>
 	</ItemGroup>
 
 	<Target Name="Init">
@@ -43,23 +48,23 @@
 		<ConvertToAbsolutePath Paths="$(TheDeployDir)">
 			<Output TaskParameter="AbsolutePaths" PropertyName="TheDeployDir"/>
 		</ConvertToAbsolutePath>
-    <ConvertToAbsolutePath Paths="$(MSPackSrcDir)">
-      <Output TaskParameter="AbsolutePaths" PropertyName="MSPackSrcDir"/>
-    </ConvertToAbsolutePath>
-    <ConvertToAbsolutePath Paths="$(MSPackOutDir)">
-      <Output TaskParameter="AbsolutePaths" PropertyName="MSPackOutDir"/>
-    </ConvertToAbsolutePath>
-    
+		<ConvertToAbsolutePath Paths="$(MSPackSrcDir)">
+			<Output TaskParameter="AbsolutePaths" PropertyName="MSPackSrcDir"/>
+		</ConvertToAbsolutePath>
+		<ConvertToAbsolutePath Paths="$(MSPackOutDir)">
+			<Output TaskParameter="AbsolutePaths" PropertyName="MSPackOutDir"/>
+		</ConvertToAbsolutePath>
+		
 
-    <Message Text="Project File Name = $(MSBuildProjectFile)" />
-    <Message Text="Project Extension = $(MSBuildProjectExtension)" />
-    <Message Text="MSBuildProjectDirectory = $(MSBuildProjectDirectory)" />
-    <Message Text="SolutionDir = $(SolutionDir)" />
+		<Message Text="Project File Name = $(MSBuildProjectFile)" />
+		<Message Text="Project Extension = $(MSBuildProjectExtension)" />
+		<Message Text="MSBuildProjectDirectory = $(MSBuildProjectDirectory)" />
+		<Message Text="SolutionDir = $(SolutionDir)" />
 
-    <Message Text="RootDir=$(RootDir)" />
-    <Message Text="TheDeployDir=$(TheDeployDir)" />
+		<Message Text="RootDir=$(RootDir)" />
+		<Message Text="TheDeployDir=$(TheDeployDir)" />
 
-  </Target>
+	</Target>
 
 	<Target Name="Validate">
 		<ItemGroup>
@@ -83,20 +88,20 @@
 		<AssemblyInfo 
 			OutputFile="@(AssemblyInfoFiles)" 
 			CodeLanguage="C#"
-      AssemblyTitle="$(TheProjName)"
-      AssemblyDescription="$(Description)"
-      AssemblyConfiguration=""
-      AssemblyCompany="Scott Willeke"
+			AssemblyTitle="$(TheProjName)"
+			AssemblyDescription="$(Description)"
+			AssemblyConfiguration=""
+			AssemblyCompany="Scott Willeke"
 			AssemblyVersion="$(TheVersion)"
 			AssemblyFileVersion="$(TheVersion)"
 			AssemblyCopyright="$(AssemblyCopyright)"  
 		>
-    </AssemblyInfo>
+		</AssemblyInfo>
 
 	</Target>
 
 	<Target Name="Clean" DependsOnTargets="Init">
-    <RemoveDir Directories="$(TheDeployDir)" />
+		<RemoveDir Directories="$(TheDeployDir)" />
 	</Target>
 
 	<Target Name="Build" DependsOnTargets="Init;Validate;SetProjectVersion;BuildMspack">
@@ -111,60 +116,60 @@
 		/>
 	</Target>
 
-  <Target Name="CleanMspack" DependsOnTargets="Init">
-    <ItemGroup>
-      <MsPackCleanFile Include="$(MSPackSrcDir)\config.h" />
-      <MsPackCleanFile Include="$(MSPackOutDir)\*.*" />
-    </ItemGroup>
-    <Delete Files="@(MsPackCleanFile)" />
-  </Target>
-  
-  <Target Name="BuildMspack" DependsOnTargets="Init;Validate;SetProjectVersion;CleanMspack">
-    <!-- Bilds the C mspack library -->
-    <ItemGroup>
-      <CFiles Include="$(mspackdir)\*.c" />
-    </ItemGroup>
+	<Target Name="CleanMspack" DependsOnTargets="Init">
+		<ItemGroup>
+			<MsPackCleanFile Include="$(MSPackSrcDir)\config.h" />
+			<MsPackCleanFile Include="$(MSPackOutDir)\*.*" />
+		</ItemGroup>
+		<Delete Files="@(MsPackCleanFile)" />
+	</Target>
+	
+	<Target Name="BuildMspack" DependsOnTargets="Init;Validate;SetProjectVersion;CleanMspack">
+		<!-- Bilds the C mspack library -->
+		<ItemGroup>
+			<CFiles Include="$(mspackdir)\*.c" />
+		</ItemGroup>
 
-    <!-- Generate config.h -->
-    <Delete Files="$(MSPackSrcDir)\config.h" />
-    <Exec Command="echo #define inline __inline > $(MSPackSrcDir)\config.h" />
-    <Exec Command="echo #define HAVE_STRING_H 1 >> $(MSPackSrcDir)\config.h" />
-    <Exec Command="echo #define HAVE_LIMITS_H 1 >> $(MSPackSrcDir)\config.h" />
-    <Exec Command="echo #define HAVE_MEMCMP 1 >> $(MSPackSrcDir)\config.h" />
+		<!-- Generate config.h -->
+		<Delete Files="$(MSPackSrcDir)\config.h" />
+		<Exec Command="echo #define inline __inline > $(MSPackSrcDir)\config.h" />
+		<Exec Command="echo #define HAVE_STRING_H 1 >> $(MSPackSrcDir)\config.h" />
+		<Exec Command="echo #define HAVE_LIMITS_H 1 >> $(MSPackSrcDir)\config.h" />
+		<Exec Command="echo #define HAVE_MEMCMP 1 >> $(MSPackSrcDir)\config.h" />
 
-    <!-- 
-    I tried to use msbuild's cl & link tasks but couldn't get them to work. So now using Exec
-      MSBuild (Visual C++) Overview: https://msdn.microsoft.com/en-us/library/ee662426.aspx
-    -->
-    <!--
-    NOTE: cl.exe is only found if using 'Developer Command Prompt for VS2015'. 
-    WILL NOT BE FOUND if using 'MSBuild Command Prompt for VS2015'.
-    cl /O2 -I.. -I. /DHAVE_CONFIG_H /c *.c
-    -->
-    <MakeDir Directories="$(MSPackOutDir)" />
-    <Exec Command="cl.exe /O2 -I$(MSPackSrcDir) /DHAVE_CONFIG_H /c $(MSPackSrcDir)\*.c" 
-          WorkingDirectory="$(MSPackOutDir)" />
-    <!--
-    link *.obj /DLL /DEF:mspack.def /IMPLIB:mspack.lib /OUT:mspack.dll
-    -->
-    <Exec Command="link.exe $(MSPackOutDir)\*.obj /DLL /DEF:$(MSPackSrcDir)\mspack.def /IMPLIB:$(MSPackOutDir)\mspack.lib /OUT:$(MSPackOutDir)\mspack.dll" 
-          WorkingDirectory="$(MSPackOutDir)" />
+		<!-- 
+		I tried to use msbuild's cl & link tasks but couldn't get them to work. So now using Exec
+			MSBuild (Visual C++) Overview: https://msdn.microsoft.com/en-us/library/ee662426.aspx
+		-->
+		<!--
+		NOTE: cl.exe is only found if using 'Developer Command Prompt for VS2015'. 
+		WILL NOT BE FOUND if using 'MSBuild Command Prompt for VS2015'.
+		cl /O2 -I.. -I. /DHAVE_CONFIG_H /c *.c
+		-->
+		<MakeDir Directories="$(MSPackOutDir)" />
+		<Exec Command="cl.exe /O2 -I$(MSPackSrcDir) /DHAVE_CONFIG_H /c $(MSPackSrcDir)\*.c" 
+					WorkingDirectory="$(MSPackOutDir)" />
+		<!--
+		link *.obj /DLL /DEF:mspack.def /IMPLIB:mspack.lib /OUT:mspack.dll
+		-->
+		<Exec Command="link.exe $(MSPackOutDir)\*.obj /DLL /DEF:$(MSPackSrcDir)\mspack.def /IMPLIB:$(MSPackOutDir)\mspack.lib /OUT:$(MSPackOutDir)\mspack.dll" 
+					WorkingDirectory="$(MSPackOutDir)" />
 </Target>
 
 	<Target Name="Deploy" DependsOnTargets="Build;Clean">
 		<MakeDir Directories="$(TheDeployDir)" />
 
 		<Copy
-            SourceFiles="%(DeployFiles.FullPath)"
-            DestinationFolder="$(TheDeployDir)"
-        />
+						SourceFiles="%(DeployFiles.FullPath)"
+						DestinationFolder="$(TheDeployDir)"
+				/>
 	</Target>
 
 	<Target Name="Zip" DependsOnTargets="Deploy">
-    <!-- see https://github.com/loresoft/msbuildtasks/blob/master/Source/MSBuild.Community.Tasks/Zip.cs -->
-    <Zip
+		<!-- see https://github.com/loresoft/msbuildtasks/blob/master/Source/MSBuild.Community.Tasks/Zip.cs -->
+		<Zip
 			Files="@(DeployFiles)"
-      Flatten="True"
+			Flatten="True"
 			ZipFileName="$(TheDeployDir)\$(TheZipFileName)"
 		/>
 	</Target>
@@ -172,33 +177,33 @@
 	<Target Name="NugetPackage" DependsOnTargets="Deploy">
 		<!-- 
 			See http://stackoverflow.com/a/30316946/51061 (for how to deal with native libs)
-      and http://docs.nuget.org/Create/Creating-and-Publishing-a-Package (for general nuget packaging info)
+			and http://docs.nuget.org/Create/Creating-and-Publishing-a-Package (for general nuget packaging info)
 		 -->
-    <PropertyGroup>
-      <PackageDir>$(TheDeployDir)\nuget-package</PackageDir>
-    </PropertyGroup>
+		<PropertyGroup>
+			<PackageDir>$(TheDeployDir)\nuget-package</PackageDir>
+		</PropertyGroup>
 
-    <Copy
+		<Copy
 			SourceFiles="$(TheProjName).nuspec;IncludeNativeLib.targets"
 			DestinationFolder="$(PackageDir)"
 		/>
-    <XmlPoke
+		<XmlPoke
 			XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
 			Query="//package/metadata/id"
 			Value="$(TheProjName)"
 		/>
-    <XmlPoke
+		<XmlPoke
 			XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
 			Query="//package/metadata/version"
 			Value="$(TheVersion)"
 		/>
-    <XmlPoke
-          XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
-          Query="//package/metadata/description"
-          Value="$(Description)"
+		<XmlPoke
+					XmlInputPath="$(PackageDir)\$(TheProjName).nuspec"
+					Query="//package/metadata/description"
+					Value="$(Description)"
 		/>
-    
-    <Exec
+		
+		<Exec
 			Command="nuget pack &quot;$(PackageDir)\$(TheProjName).nuspec&quot; -NoDefaultExcludes -Verbosity Normal" 
 			WorkingDirectory="$(PackageDir)"
 			ContinueOnError="true"
@@ -215,7 +220,7 @@
 			Importance="high"
 		/>
 		
-    <Message
+		<Message
 			Importance="high"
 			Text="
 Next Steps to publish:
