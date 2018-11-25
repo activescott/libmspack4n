@@ -50,6 +50,9 @@ deploy:
       appveyor_repo_tag: true         # only deploy when there is a tag pushed
       appveyor_repo_tag_name: publish # only deploy when tag == "publish"
 
+on_finish:
+  - cmd: 'dir /s %APPVEYOR_BUILD_FOLDER%\.deploy'
+
 ##### KEEP RDP ACCESS #####
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 #on_finish:
