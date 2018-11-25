@@ -13,7 +13,7 @@
 
 #include <system.h>
 
-#ifndef LARGEFILE_SUPPORT
+#if !LARGEFILE_SUPPORT
 const char *largefile_msg = "library not compiled to support large files.";
 #endif
 
@@ -27,12 +27,16 @@ int mspack_version(int entity) {
     * - added mschmd_header::chunk_cache;
     */
   case MSPACK_VER_MSCHMD:
+  /* CAB decoder version 1 -> 2 changes:
+   * - added MSCABD_PARAM_SALVAGE
+   */
+  case MSPACK_VER_MSCABD:
     return 2;
   case MSPACK_VER_LIBRARY:
   case MSPACK_VER_SYSTEM:
-  case MSPACK_VER_MSCABD:
   case MSPACK_VER_MSSZDDD:
   case MSPACK_VER_MSKWAJD:
+  case MSPACK_VER_MSOABD:
     return 1;
   case MSPACK_VER_MSCABC:
   case MSPACK_VER_MSCHMC:
@@ -42,6 +46,7 @@ int mspack_version(int entity) {
   case MSPACK_VER_MSHLPC:
   case MSPACK_VER_MSSZDDC:
   case MSPACK_VER_MSKWAJC:
+  case MSPACK_VER_MSOABC:
     return 0;
   }
   return -1;
@@ -61,7 +66,7 @@ int mspack_valid_system(struct mspack_system *sys) {
 
 /* returns the length of a file opened for reading */
 int mspack_sys_filelen(struct mspack_system *system,
-		       struct mspack_file *file, off_t *length)
+                       struct mspack_file *file, off_t *length)
 {
   off_t current;
 
@@ -110,11 +115,8 @@ struct mspack_file_p {
   const char *name;
 };
 
-//prototype:
-static void msp_msg(struct mspack_file *file, const char *format, ...);
-
 static struct mspack_file *msp_open(struct mspack_system *self,
-				    const char *filename, int mode)
+                                    const char *filename, int mode)
 {
   struct mspack_file_p *fh;
   const char *fmode;
@@ -130,7 +132,6 @@ static struct mspack_file *msp_open(struct mspack_system *self,
   if ((fh = (struct mspack_file_p *) malloc(sizeof(struct mspack_file_p)))) {
     fh->name = filename;
     if ((fh->fh = fopen(filename, fmode))) return (struct mspack_file *) fh;
-	msp_msg(NULL, "fopen error:%i", errno);//22=Invalid argument, 2=No such file or directory 
     free(fh);
   }
   return NULL;
@@ -171,7 +172,7 @@ static int msp_seek(struct mspack_file *file, off_t offset, int mode) {
     case MSPACK_SYS_SEEK_END:   mode = SEEK_END; break;
     default: return -1;
     }
-#ifdef HAVE_FSEEKO
+#if HAVE_FSEEKO
     return fseeko(self->fh, offset, mode);
 #else
     return fseek(self->fh, offset, mode);
@@ -182,7 +183,7 @@ static int msp_seek(struct mspack_file *file, off_t offset, int mode) {
 
 static off_t msp_tell(struct mspack_file *file) {
   struct mspack_file_p *self = (struct mspack_file_p *) file;
-#ifdef HAVE_FSEEKO
+#if HAVE_FSEEKO
   return (self) ? (off_t) ftello(self->fh) : 0;
 #else
   return (self) ? (off_t) ftell(self->fh) : 0;
@@ -200,7 +201,7 @@ static void msp_msg(struct mspack_file *file, const char *format, ...) {
 }
 
 static void *msp_alloc(struct mspack_system *self, size_t bytes) {
-#ifdef DEBUG
+#if DEBUG
   /* make uninitialised data obvious */
   char *buf = malloc(bytes + 8);
   if (buf) memset(buf, 0xDC, bytes);
@@ -212,7 +213,7 @@ static void *msp_alloc(struct mspack_system *self, size_t bytes) {
 }
 
 static void msp_free(void *buffer) {
-#ifdef DEBUG
+#if DEBUG
   char *buf = buffer;
   size_t bytes;
   if (buf) {
