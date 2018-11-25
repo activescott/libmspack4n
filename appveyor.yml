@@ -1,0 +1,53 @@
+# see http://www.appveyor.com/docs/appveyor-yml
+
+##### ENABLE REMOVE RDP ACCESS #####
+# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+#init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#######################
+
+#---------------------------------#
+#      build configuration        #
+#---------------------------------#
+build_script:
+ - cmd: 'msbuild .\.build\libmspack4n.msbuild /p:TheVersion="%APPVEYOR_BUILD_VERSION%" /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"'
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+test:
+  assemblies:
+    - .\src\.deploy\libmspack4ntest.dll
+
+artifacts:
+- path: 'src\.deploy\nuget-package\*.nupkg'
+- path: 'src\.deploy\*.zip'
+
+deploy:
+  - provider: GitHub # See https://www.appveyor.com/docs/deployment/github/
+    release: v$(APPVEYOR_BUILD_VERSION)
+    description: 'Appveyor deployed v$(APPVEYOR_BUILD_VERSION)'
+    auth_token:
+      secure: Ocl+kToBlL/IWT9+682+RyT3guxvjf/ZROODM+yt9BIAQaRu3xuKTATThJe9+Vuw # from https://github.com/settings/tokens; encrypted at https://ci.appveyor.com/tools/encrypt
+    artifact: /(.*\.nupkg)|(.*\.zip)/ # upload NuGet & zip files to release assets
+    draft: false
+    prerelease: false
+    on:
+      branch: master                  # only deploy on master
+      appveyor_repo_tag: true         # only deploy when there is a tag pushed
+      appveyor_repo_tag_name: publish # only deploy when tag == "publish"
+  
+  - provider: NuGet # See https://www.appveyor.com/docs/deployment/nuget/
+    api_key:
+      secure: 9elIHDxuSEIvn/us9M5SmtAatYvwZO++m8dYABofIt+/2xcLpuz1Qv9DkypOzpeU # from https://www.nuget.org/account/apikeys; encrypted at https://ci.appveyor.com/tools/encrypt
+    artifact: /.*\.nupkg/
+    on:
+      branch: master                  # only deploy on master
+      appveyor_repo_tag: true         # only deploy when there is a tag pushed
+      appveyor_repo_tag_name: publish # only deploy when tag == "publish"
+
+##### KEEP RDP ACCESS #####
+# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+#on_finish:
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#######################
