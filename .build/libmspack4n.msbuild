@@ -32,7 +32,7 @@
 
 	<ItemGroup>
 		<DeployFiles Include="$(MSPackOutDir)\mspack.dll"></DeployFiles>
-		<DeployFiles Include="$(RootDir)\packages\LessIO.0.3.0\lib\net40\LessIO.dll"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\packages\LessIO.0.6.16\lib\net40\LessIO.dll"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.dll"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.pdb"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\libmspack4ntest.dll"></DeployFiles>
