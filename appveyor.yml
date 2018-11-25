@@ -21,7 +21,7 @@ build_script:
 #---------------------------------#
 test:
   assemblies:
-    - .\src\.deploy\libmspack4ntest.dll
+    - .deploy\libmspack4ntest.dll
 
 artifacts:
 - path: '.deploy\nuget-package\*.nupkg'
