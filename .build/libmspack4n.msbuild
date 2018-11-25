@@ -20,6 +20,7 @@
 		<Description>A .NET version of the libmspack libmspack library that enables programatically reading and extracting the content of Microsoft cab files.</Description>
 		<TheProjName>libmspack4n</TheProjName>
 		<TheZipFileName>$(TheProjName)-v$(TheVersion).zip</TheZipFileName>
+		<NugetPath>../.nuget/nuget.exe</NugetPath>
 
 		<MSPackSrcDir>$(RootDir)\lib\libmspack\mspack</MSPackSrcDir>
 		<MSPackOutDir>$(RootDir)\lib\libmspack\mspack\bin</MSPackOutDir>
@@ -47,6 +48,9 @@
 		<!-- Apparently the PropertyGroup values are evaluated early and not reevaluated on demand because I had to run this again to get it to accept the new root dir value -->
 		<ConvertToAbsolutePath Paths="$(TheDeployDir)">
 			<Output TaskParameter="AbsolutePaths" PropertyName="TheDeployDir"/>
+		</ConvertToAbsolutePath>
+		<ConvertToAbsolutePath Paths="$(NugetPath)">
+			<Output TaskParameter="AbsolutePaths" PropertyName="NugetPath"/>
 		</ConvertToAbsolutePath>
 		<ConvertToAbsolutePath Paths="$(MSPackSrcDir)">
 			<Output TaskParameter="AbsolutePaths" PropertyName="MSPackSrcDir"/>
@@ -104,7 +108,14 @@
 		<RemoveDir Directories="$(TheDeployDir)" />
 	</Target>
 
-	<Target Name="Build" DependsOnTargets="Init;Validate;SetProjectVersion;BuildMspack">
+	<Target Name="EnsureDependencies" DependsOnTargets="Init">
+		<!-- Only download a new copy of nuget.exe if we don't have a copy available -->
+		<WebDownload Condition="!Exists('$(NugetPath)')" Filename="$(NugetPath)" FileUri="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" />
+
+		<Exec Command='$(NugetPath) restore -Verbosity Detailed -NonInteractive -OutputDirectory $(RootDir)packages\ -Source "https://api.nuget.org/v3/index.json" $(RootDir)\libmspack4n.sln'></Exec>
+	</Target>	
+
+	<Target Name="Build" DependsOnTargets="Init;Validate;SetProjectVersion;EnsureDependencies;BuildMspack">
 		<Message Text="Building version: $(TheVersion)" />
 		
 		<Message Text="Absolute project path: %(TheProjects.FullPath)" />
