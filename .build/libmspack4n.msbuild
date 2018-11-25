@@ -36,10 +36,13 @@
 		<DeployFiles Include="$(RootDir)\packages\LessIO.0.6.16\lib\net40\LessIO.dll"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.dll"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4n\bin\Release\libmspackn.pdb"></DeployFiles>
+		<!-- Enables running tests in deploy dir: -->
 		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\libmspack4ntest.dll"></DeployFiles>
 		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\libmspack4ntest.pdb"></DeployFiles>
-		<!-- Enables running tests in deploy dir: -->
-		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.*"></DeployFiles>
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.execution.desktop.dll" />
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.abstractions.dll" />
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.core.dll" />
+		<DeployFiles Include="$(RootDir)\libmspack4ntest\bin\Release\xunit.assert.dll" />
 	</ItemGroup>
 
 	<Target Name="Init">
