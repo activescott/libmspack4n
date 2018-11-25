@@ -24,8 +24,8 @@ test:
     - .\src\.deploy\libmspack4ntest.dll
 
 artifacts:
-- path: 'src\.deploy\nuget-package\*.nupkg'
-- path: 'src\.deploy\*.zip'
+- path: '.deploy\nuget-package\*.nupkg'
+- path: '.deploy\*.zip'
 
 deploy:
   - provider: GitHub # See https://www.appveyor.com/docs/deployment/github/
