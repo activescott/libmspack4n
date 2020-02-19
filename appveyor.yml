@@ -35,11 +35,10 @@ build:
 test: off
 
 after_build:
- - mv libmspack4n\bin\Debug\*.nupkg .\
- - 7z a libmspack4n-%appveyor_build_version%.zip libmspack4n\bin\Debug\*
+ - 7z a libmspack4n-%appveyor_build_version%.zip libmspack4n\bin\Debug\* -xr!*.nupkg
 
 artifacts:
-- path: '*.nupkg'
+- path: '**\*.nupkg'
 - path: '*.zip'
 
 deploy:
