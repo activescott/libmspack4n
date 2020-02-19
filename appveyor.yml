@@ -39,12 +39,11 @@ build:
  project: libmspack4n.sln
 
 after_build:
- - 7z a libmspack4n-$(appveyor_build_version).zip libmspack4n\bin\Debug\*
- - nuget pack libmspack4n\libmspack4n.nuspec
+ - 7z a libmspack4n-%appveyor_build_version%.zip libmspack4n\bin\Debug\*
 
 artifacts:
 - path: '**\*.nupkg'
-- path: '.deploy\*.zip'
+- path: '*.zip'
 
 deploy:
   - provider: GitHub

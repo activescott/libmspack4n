@@ -22,6 +22,7 @@ lib/libmspack/mspack/mspack.exp
 lib/libmspack/mspack/mspack.lib
 lib/libmspack/mspack/mspack.pdb
 lib/libmspack/mspack/bin/*.*
+/lib/libmspack.vcxproj.user
 
 # misc C# stuff
 *.obj

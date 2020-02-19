@@ -42,12 +42,4 @@
     <ProjectReference Include="..\libmspack4n\libmspack4n.csproj" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="del /Q $(TargetDir)\mspack.dll" />
-  </Target>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="SET MSPACKDLL=$(ProjectDir)..\lib\libmspack\mspack\mspack.dll&#xD;&#xA;if exist %25MSPACKDLL%25 (&#xD;&#xA; copy /Y %25MSPACKDLL%25 $(TargetDir)&#xD;&#xA;) else (&#xD;&#xA; echo %25MSPACKDLL%25 not built. Build it by running the build script in $(ProjectDir)..\.build (or $(ProjectDir)..\build.bat)&#xD;&#xA;)" />
-  </Target>
-
 </Project>

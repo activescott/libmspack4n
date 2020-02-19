@@ -3,8 +3,21 @@
   <PropertyGroup>
     <TargetFrameworks>net461;net462;net472;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RootNamespace>LibMSPackN</RootNamespace>
     <AssemblyName>libmspackn</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Libmspack</PackageId>
+    <Version>0.9.10.0</Version>
+    <Authors>Scott Willeke</Authors>
+    <PackageProjectUrl>https://github.com/activescott/libmspack4n</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/activescott/libmspack4n/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>A .NET version of the libmspack libmspack library that enables programatically reading and extracting the content of Microsoft cab files.</Description>
+    <Copyright>Copyright @2013-2020</Copyright>
+    <PackageTags>cab zip compression file files directory directories io filesystem file-system</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'">
@@ -24,15 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="libmspack4n.nuspec" />
+    <Content Include="mspack.dll" />
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="del /Q $(TargetDir)\mspack.dll" />
-  </Target>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="SET MSPACKDLL=$(ProjectDir)..\lib\libmspack\mspack\mspack.dll&#xD;&#xA;if exist %25MSPACKDLL%25 (&#xD;&#xA; copy /Y %25MSPACKDLL%25 $(TargetDir)&#xD;&#xA;) else (&#xD;&#xA; echo %25MSPACKDLL%25 not built. Build it by running the build script in $(ProjectDir)..\.build (or $(ProjectDir)..\build.bat)&#xD;&#xA;)" />
-  </Target>
 
 </Project>
