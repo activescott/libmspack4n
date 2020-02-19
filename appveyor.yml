@@ -25,6 +25,9 @@ dotnet_csproj:
 #---------------------------------#
 #      build configuration        #
 #---------------------------------#
+before_build:
+- nuget restore
+
 build:
  project: libmspack4n.sln
  publish_nuget: true
