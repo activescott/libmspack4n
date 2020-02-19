@@ -32,10 +32,7 @@ before_build:
 build:
  project: libmspack4n.sln
 
-test:
- assemblies:
-  only:
-   - '**\libmspack4ntest.dll'
+test: off
 
 after_build:
  - 7z a libmspack4n-%appveyor_build_version%.zip libmspack4n\bin\Debug\*
