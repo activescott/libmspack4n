@@ -37,10 +37,10 @@ before_build:
 
 build:
  project: libmspack4n.sln
- publish_nuget: true
 
 after_build:
  - 7z a libmspack4n-$(appveyor_build_version).zip libmspack4n\bin\Debug\*
+ - nuget pack libmspack4n\libmspack4n.nuspec
 
 artifacts:
 - path: '**\*.nupkg'

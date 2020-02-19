@@ -10,10 +10,10 @@
     <description>$description$</description>
     <copyright>Copyright @2013-2020</copyright>
     <tags>cab zip compression file files directory directories io filesystem file-system</tags>
+    <dependencies>
+      <dependency id="LessIO" version="0.6.16.0" />
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="LessIO" version="0.6.16.0" />
-  </dependencies>
   <files>
     <file src="bin\Debug\net461\libmspackn.dll" target="lib\net461\libmspackn.dll" />
     <file src="bin\Debug\net461\mspack.dll" target="lib\net461\mspack.dll" />
