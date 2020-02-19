@@ -1,6 +1,12 @@
 ﻿using System;
-using LessIO;
 using System.Runtime.InteropServices;
+
+// This is needed until LessIO supports .NET Core
+#if NET_CORE
+using System.IO;
+#else
+using LessIO;
+#endif
 
 namespace LibMSPackN
 {
@@ -64,8 +70,14 @@ namespace LibMSPackN
 		{
 			ThrowOnInvalidState();
 			IntPtr pDestinationFilename = IntPtr.Zero;
-            //TODO: Delete the file if it exists. If there are any issues ovewriting the dest file (e.g. it's readonly) MSPACK gives essentialy no error information.
+			//TODO: Delete the file if it exists. If there are any issues ovewriting the dest file (e.g. it's readonly) MSPACK gives essentialy no error information.
+
+			#if NET_CORE
+			string longDestinationFilename = $"\\\\?\\{destinationFilename}";
+			#else
 			string longDestinationFilename = new Path(destinationFilename).WithWin32LongPathPrefix();
+			#endif
+
             try
 			{
 				pDestinationFilename = Marshal.StringToCoTaskMemAnsi(longDestinationFilename);
@@ -73,10 +85,14 @@ namespace LibMSPackN
 				if (result != NativeMethods.MSPACK_ERR.MSPACK_ERR_OK)
 					throw new Exception(string.Format("Error '{0}' extracting file to {1}.", result, longDestinationFilename));
 
-                FileSystem.SetLastWriteTime(new LessIO.Path(longDestinationFilename), GetModifiedTime());
+				#if NET_CORE
+				File.SetLastWriteTime(longDestinationFilename, GetModifiedTime());
+				var theAttributes = File.GetAttributes(longDestinationFilename);
+				#else
+				FileSystem.SetLastWriteTime(new LessIO.Path(longDestinationFilename), GetModifiedTime());
+				var theAttributes = FileSystem.GetAttributes(new LessIO.Path(longDestinationFilename));
+				#endif
 
-                var theAttributes = FileSystem.GetAttributes(new LessIO.Path(longDestinationFilename));
-                
 				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_ARCH) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_ARCH)
 					theAttributes |= FileAttributes.Archive;
 				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_HIDDEN) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_HIDDEN)
@@ -86,7 +102,11 @@ namespace LibMSPackN
 				if ((_nativeFile.attribs & NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_SYSTEM) == NativeMethods.mscabd_file_attribs.MSCAB_ATTRIB_SYSTEM)
 					theAttributes |= FileAttributes.System;
 
-                FileSystem.SetAttributes(new LessIO.Path(longDestinationFilename), theAttributes);
+				#if NET_CORE
+				File.SetAttributes(longDestinationFilename, theAttributes);
+				#else
+				FileSystem.SetAttributes(new LessIO.Path(longDestinationFilename), theAttributes);
+				#endif
 			}
 			finally
 			{

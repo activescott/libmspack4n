@@ -12,10 +12,9 @@
 
 /* KWAJ decompression implementation */
 
-#include <system.h>
-#include <kwaj.h>
-#include <mszip.h>
-
+#include "system.h"
+#include "kwaj.h"
+#include "mszip.h"
 /* prototypes */
 static struct mskwajd_header *kwajd_open(
     struct mskwaj_decompressor *base, const char *filename);
@@ -373,7 +372,7 @@ static int kwajd_error(struct mskwaj_decompressor *base)
     }                                                   \
     INJECT_BITS(*i_ptr++, 8);                           \
 } while (0)
-#include <readbits.h>
+#include "readbits.h"
 
 /* import huffman-reading macros and code */
 #define TABLEBITS(tbl)      KWAJ_TABLEBITS
@@ -381,7 +380,7 @@ static int kwajd_error(struct mskwaj_decompressor *base)
 #define HUFF_TABLE(tbl,idx) lzh->tbl##_table[idx]
 #define HUFF_LEN(tbl,idx)   lzh->tbl##_len[idx]
 #define HUFF_ERROR          return MSPACK_ERR_DATAFORMAT
-#include <readhuff.h>
+#include "readhuff.h"
 
 /* In the KWAJ LZH format, there is no special 'eof' marker, it just
  * ends. Depending on how many bits are left in the final byte when

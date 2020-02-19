@@ -1,8 +1,14 @@
 ﻿using System;
-using LessIO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+
+// This is needed until LessIO supports .NET Core
+#if NET_CORE
+using System.IO;
+#else
+using LessIO;
+#endif
 
 namespace LibMSPackN
 {
@@ -35,8 +41,13 @@ namespace LibMSPackN
 
 		public MSCabinet(string cabinetFilename)
 		{
-            cabinetFilename = new Path(cabinetFilename).WithWin32LongPathPrefix();
-            _cabinetFilename = cabinetFilename;
+			#if NET_CORE
+			cabinetFilename = $"\\\\?\\{cabinetFilename}";
+			#else
+			cabinetFilename = new Path(cabinetFilename).WithWin32LongPathPrefix();
+			#endif
+
+			_cabinetFilename = cabinetFilename;
 			_pCabinetFilenamePinned = Marshal.StringToCoTaskMemAnsi(_cabinetFilename);// needs to be pinned as we use the address in unmanaged code.
 			_pDecompressor = MSCabDecompressor.CreateInstance();
 

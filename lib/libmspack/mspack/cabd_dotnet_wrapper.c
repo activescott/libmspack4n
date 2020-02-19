@@ -22,8 +22,8 @@
  */
  
 #include <stdio.h>
-#include <mspack.h>
-#include <cab.h>
+#include "mspack.h"
+#include "cab.h"
 #include <stdarg.h>
 
 

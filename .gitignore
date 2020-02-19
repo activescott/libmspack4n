@@ -9,20 +9,28 @@
 !**/packages/repositories.config
 
 # mspack c code ignores
+/lib/Debug/libmspac.12163A1B.tlog
+/lib/Debug/vc142.pdb
+/lib/Debug/vc142.idb
+/lib/Debug/mspack.Build.CppClean.log
+/lib/Debug/libmspack-for-debugging-only.vcxproj.FileListAbsolute.txt
+/lib/Debug/libmspack-for-debugging-only.log
 lib/libmspack/config.h
 lib/libmspack/mspack/config.h
 lib/libmspack/mspack/mspack.dll
-lib/libmspack/mspack/mspack.lib
 lib/libmspack/mspack/mspack.exp
+lib/libmspack/mspack/mspack.lib
+lib/libmspack/mspack/mspack.pdb
 lib/libmspack/mspack/bin/*.*
 
 # misc C# stuff
 *.obj
 *.suo
 *.csproj.user
+.deploy
 /src/.deploy
 libmspack4n/bin/
 libmspack4n/obj/
 libmspack4ntest/bin/
 libmspack4ntest/obj/
-/.deploy
+.vs/libmspack4n

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libmspack4n", "libmspack4n\libmspack4n.csproj", "{3903631A-A516-4A7C-B614-EF7DF4251E5F}"
 EndProject
@@ -16,22 +16,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.build\libmspack4n.nuspec = .build\libmspack4n.nuspec
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmspack-for-debugging-only", "lib\libmspack-for-debugging-only.vcxproj", "{12163A1B-35F9-4349-B1FC-51412F618B97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Debug|x86.ActiveCfg = Debug|x86
-		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Debug|x86.Build.0 = Debug|x86
-		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Release|x86.ActiveCfg = Release|x86
-		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Release|x86.Build.0 = Release|x86
-		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Debug|x86.ActiveCfg = Debug|x86
-		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Debug|x86.Build.0 = Debug|x86
-		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Release|x86.ActiveCfg = Release|x86
-		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Release|x86.Build.0 = Release|x86
+		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Debug|x86.Build.0 = Debug|Any CPU
+		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Release|x86.ActiveCfg = Release|Any CPU
+		{3903631A-A516-4A7C-B614-EF7DF4251E5F}.Release|x86.Build.0 = Release|Any CPU
+		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Debug|x86.Build.0 = Debug|Any CPU
+		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Release|x86.ActiveCfg = Release|Any CPU
+		{4B676BE7-A23F-4A9D-B114-5C7D3513532B}.Release|x86.Build.0 = Release|Any CPU
+		{12163A1B-35F9-4349-B1FC-51412F618B97}.Debug|x86.ActiveCfg = Debug|Win32
+		{12163A1B-35F9-4349-B1FC-51412F618B97}.Debug|x86.Build.0 = Debug|Win32
+		{12163A1B-35F9-4349-B1FC-51412F618B97}.Release|x86.ActiveCfg = Release|Win32
+		{12163A1B-35F9-4349-B1FC-51412F618B97}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {992E60C9-A03A-4223-BC29-9EA17BBA47A5}
 	EndGlobalSection
 EndGlobal
