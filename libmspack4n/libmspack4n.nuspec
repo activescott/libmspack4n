@@ -15,15 +15,15 @@
     <dependency id="LessIO" version="0.6.16.0" />
   </dependencies>
   <files>
-    <file src="..\libmspack4n\bin\Debug\net461\libmspackn.dll" target="lib\net461\libmspackn.dll" />
-    <file src="..\libmspack4n\bin\Debug\net461\mspack.dll" target="lib\net461\mspack.dll" />
-    <file src="..\libmspack4n\bin\Debug\net462\libmspackn.dll" target="lib\net462\libmspackn.dll" />
-    <file src="..\libmspack4n\bin\Debug\net462\mspack.dll" target="lib\net462\mspack.dll" />
-    <file src="..\libmspack4n\bin\Debug\net472\libmspackn.dll" target="lib\net472\libmspackn.dll" />
-    <file src="..\libmspack4n\bin\Debug\net472\mspack.dll" target="lib\net472\mspack.dll" />
-    <file src="..\libmspack4n\bin\Debug\netcoreapp2.1\libmspackn.dll" target="lib\netcoreapp2.1\libmspackn.dll" />
-    <file src="..\libmspack4n\bin\Debug\netcoreapp2.1\mspack.dll" target="lib\netcoreapp2.1\mspack.dll" />
-    <file src="..\libmspack4n\bin\Debug\netcoreapp3.0\libmspackn.dll" target="lib\netcoreapp3.0\libmspackn.dll" />
-    <file src="..\libmspack4n\bin\Debug\netcoreapp3.0\mspack.dll" target="lib\netcoreapp3.0\mspack.dll" />
+    <file src="bin\Debug\net461\libmspackn.dll" target="lib\net461\libmspackn.dll" />
+    <file src="bin\Debug\net461\mspack.dll" target="lib\net461\mspack.dll" />
+    <file src="bin\Debug\net462\libmspackn.dll" target="lib\net462\libmspackn.dll" />
+    <file src="bin\Debug\net462\mspack.dll" target="lib\net462\mspack.dll" />
+    <file src="bin\Debug\net472\libmspackn.dll" target="lib\net472\libmspackn.dll" />
+    <file src="bin\Debug\net472\mspack.dll" target="lib\net472\mspack.dll" />
+    <file src="bin\Debug\netcoreapp2.1\libmspackn.dll" target="lib\netcoreapp2.1\libmspackn.dll" />
+    <file src="bin\Debug\netcoreapp2.1\mspack.dll" target="lib\netcoreapp2.1\mspack.dll" />
+    <file src="bin\Debug\netcoreapp3.0\libmspackn.dll" target="lib\netcoreapp3.0\libmspackn.dll" />
+    <file src="bin\Debug\netcoreapp3.0\mspack.dll" target="lib\netcoreapp3.0\mspack.dll" />
   </files>
 </package>
