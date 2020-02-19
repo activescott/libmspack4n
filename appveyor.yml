@@ -26,6 +26,7 @@ dotnet_csproj:
 #      build configuration        #
 #---------------------------------#
 build:
+ project: libmspack4n.sln
  publish_nuget: true
 
 after_build:
