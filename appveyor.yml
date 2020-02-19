@@ -35,7 +35,7 @@ build:
 test:
  assemblies:
   only:
-   - **\libmspack4ntest.dll
+   - '**\libmspack4ntest.dll'
 
 after_build:
  - 7z a libmspack4n-%appveyor_build_version%.zip libmspack4n\bin\Debug\*
