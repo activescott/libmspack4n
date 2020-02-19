@@ -18,12 +18,6 @@ install:
   - ps: appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
 
-assembly_info:
- patch: true
- file: '**\AssemblyInfo.*'
- assembly_version: '{version}'
- assembly_file_version: '{version}'
-
 dotnet_csproj:
  patch: true
  file: '**\*.csproj'

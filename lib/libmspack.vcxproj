@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{12163A1B-35F9-4349-B1FC-51412F618B97}</ProjectGuid>
     <RootNamespace>libmspack</RootNamespace>
-    <ProjectName>libmspack-for-debugging-only</ProjectName>
+    <ProjectName>libmspack</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

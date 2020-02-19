@@ -13,8 +13,9 @@
 /lib/Debug/vc142.pdb
 /lib/Debug/vc142.idb
 /lib/Debug/mspack.Build.CppClean.log
-/lib/Debug/libmspack-for-debugging-only.vcxproj.FileListAbsolute.txt
-/lib/Debug/libmspack-for-debugging-only.log
+/lib/Debug/libmspack.tlog
+/lib/Debug/libmspack.log
+/lib/Debug/libmspack.vcxproj.FileListAbsolute.txt
 lib/libmspack/config.h
 lib/libmspack/mspack/config.h
 lib/libmspack/mspack/mspack.dll
@@ -22,7 +23,7 @@ lib/libmspack/mspack/mspack.exp
 lib/libmspack/mspack/mspack.lib
 lib/libmspack/mspack/mspack.pdb
 lib/libmspack/mspack/bin/*.*
-/lib/libmspack.vcxproj.user
+lib/libmspack.vcxproj.user
 
 # misc C# stuff
 *.obj
