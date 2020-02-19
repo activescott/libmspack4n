@@ -8,18 +8,22 @@
     <projectUrl>https://github.com/activescott/libmspack4n</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <copyright>Copyright @2013-2016</copyright>
+    <copyright>Copyright @2013-2020</copyright>
     <tags>cab zip compression file files directory directories io filesystem file-system</tags>
   </metadata>
-  <!-- 
-	See http://stackoverflow.com/a/30316946/51061 (for how to deal with native libs)
-  and http://docs.nuget.org/Create/Creating-and-Publishing-a-Package (for general nuget packaging info)
-  NOTE: Runtimes (https://docs.nuget.org/Create/uwp-create#runtimes) didn't work for me. It appears that using runtimes still requires a .targets still so what's the point?
-  -->
+  <dependencies>
+    <dependency id="LessIO" version="0.6.16.0" />
+  </dependencies>
   <files>
-    <file src="../libmspackn.dll" target="lib/net40/" />
-    <!-- TODO: Add a x64 build of mspack.dll -->
-    <file src="../mspack.dll" target="build/x86/" />
-    <file src="IncludeNativeLib.targets" target="build" />
+    <file src="..\libmspack4n\bin\Debug\net461\libmspackn.dll" target="lib\net461\libmspackn.dll" />
+    <file src="..\libmspack4n\bin\Debug\net461\mspack.dll" target="lib\net461\mspack.dll" />
+    <file src="..\libmspack4n\bin\Debug\net462\libmspackn.dll" target="lib\net462\libmspackn.dll" />
+    <file src="..\libmspack4n\bin\Debug\net462\mspack.dll" target="lib\net462\mspack.dll" />
+    <file src="..\libmspack4n\bin\Debug\net472\libmspackn.dll" target="lib\net472\libmspackn.dll" />
+    <file src="..\libmspack4n\bin\Debug\net472\mspack.dll" target="lib\net472\mspack.dll" />
+    <file src="..\libmspack4n\bin\Debug\netcoreapp2.1\libmspackn.dll" target="lib\netcoreapp2.1\libmspackn.dll" />
+    <file src="..\libmspack4n\bin\Debug\netcoreapp2.1\mspack.dll" target="lib\netcoreapp2.1\mspack.dll" />
+    <file src="..\libmspack4n\bin\Debug\netcoreapp3.0\libmspackn.dll" target="lib\netcoreapp3.0\libmspackn.dll" />
+    <file src="..\libmspack4n\bin\Debug\netcoreapp3.0\mspack.dll" target="lib\netcoreapp3.0\mspack.dll" />
   </files>
 </package>

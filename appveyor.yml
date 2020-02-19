@@ -1,34 +1,42 @@
 # see http://www.appveyor.com/docs/appveyor-yml
 
-##### ENABLE REMOVE RDP ACCESS #####
-# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
-#init:
-#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-#######################
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+image: Visual Studio 2019
+
+environment:
+  EnableNuGetPackageRestore: true
 
 install:
-  # C++ Requires importing vcvars: https://www.appveyor.com/docs/lang/cpp/#visual-studio-2015
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
+  - ps: appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+
+assembly_info:
+ patch: true
+ file: '**\AssemblyInfo.*'
+ assembly_version: $(appveyor_build_version)
+ assembly_file_version: $(appveyor_build_version)
+
+dotnet_csproj:
+ patch: true
+ file: '**\*.csproj'
+ package_version: $(appveyor_build_version)
 
 #---------------------------------#
 #      build configuration        #
 #---------------------------------#
-build_script:
- - cmd: 'msbuild .\.build\libmspack4n.msbuild /p:TheVersion="%APPVEYOR_BUILD_VERSION%" /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"'
+build:
+ publish_nuget: true
 
-#---------------------------------#
-#       tests configuration       #
-#---------------------------------#
-test:
-  assemblies:
-    - .deploy\libmspack4ntest.dll
+after_build:
+ - 7z a libmspack4n-$(appveyor_build_version).zip libmspack4n\bin\Debug\*
 
 artifacts:
-- path: '.deploy\nuget-package\*.nupkg'
+- path: '**\*.nupkg'
 - path: '.deploy\*.zip'
 
 deploy:
-  - provider: GitHub # See https://www.appveyor.com/docs/deployment/github/
+  - provider: GitHub
     release: v$(APPVEYOR_BUILD_VERSION)
     description: 'Appveyor deployed v$(APPVEYOR_BUILD_VERSION)'
     auth_token:
@@ -49,12 +57,3 @@ deploy:
       branch: master                  # only deploy on master
       appveyor_repo_tag: true         # only deploy when there is a tag pushed
       appveyor_repo_tag_name: publish # only deploy when tag == "publish"
-
-on_finish:
-  - cmd: 'dir /s %APPVEYOR_BUILD_FOLDER%\.deploy'
-  - cmd: 'dir /s %APPVEYOR_BUILD_FOLDER%\libmspack4ntest\bin\Release'
-##### KEEP RDP ACCESS #####
-# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
-#on_finish:
-#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-#######################
