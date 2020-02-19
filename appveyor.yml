@@ -21,13 +21,13 @@ install:
 assembly_info:
  patch: true
  file: '**\AssemblyInfo.*'
- assembly_version: $(appveyor_build_version)
- assembly_file_version: $(appveyor_build_version)
+ assembly_version: '{version}'
+ assembly_file_version: '{version}'
 
 dotnet_csproj:
  patch: true
  file: '**\*.csproj'
- package_version: $(appveyor_build_version)
+ package_version: '{version}'
 
 #---------------------------------#
 #      build configuration        #
