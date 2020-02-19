@@ -23,6 +23,10 @@
     <ProjectReference Include="..\lib\libmspack-for-debugging-only.vcxproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="libmspack4n.nuspec" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="del /Q $(TargetDir)\mspack.dll" />
   </Target>
