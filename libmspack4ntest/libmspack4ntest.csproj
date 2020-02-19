@@ -39,6 +39,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\libmspack4n\libmspack4n.csproj" />
+    <ProjectReference Include="..\lib\libmspack.vcxproj" />
+    <None Include="..\lib\libmspack\mspack\mspack.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
