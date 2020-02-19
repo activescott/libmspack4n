@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Libmspack</PackageId>
+    <PackageId>libmspack4n</PackageId>
     <Version>0.9.10.0</Version>
     <Authors>Scott Willeke</Authors>
     <PackageProjectUrl>https://github.com/activescott/libmspack4n</PackageProjectUrl>
